@@ -1,0 +1,322 @@
+:root {
+  --color-blue: #004AAD;
+  --color-green: #097f1b;
+  --color-grey: #b1aeae;
+  --body-bg: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
+  --border: 1px solid #ddd;
+  --left-bubble-bg: linear-gradient(0deg, #dfdede, #ececec);
+  --right-bubble-bg: linear-gradient(0deg, #3789f6, #579ffb);
+  --chat-header-height: 9vh;
+  --chat-window-height: 82vh;
+  --input-area-height: 9vh;
+  --signin-window-height: 100vh;
+  --box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+html {
+  box-sizing: border-box;
+}
+
+/* Ensure consistent layout. Resets margin and padding of all elements to zero and sets the box-sizing is inherited from their parent elements. */
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Helvetica, sans-serif;
+}
+
+/* App */
+
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+
+.app-logo {
+  max-width: 5%;
+  max-height: auto;
+}
+
+.app-logo-banner {
+  max-width: 20%;
+  max-height: auto;
+}
+
+/* Chat */
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  height: var(--chat-header-height);
+  border-bottom: var(--border);
+}
+
+.chat-window {
+  width: 100vw;
+  height: var(--chat-window-height);
+  flex: 1;
+  overflow-y: scroll;
+  padding-left: 6%;
+  padding-right: 6%;
+  background: #ffff;
+}
+
+.chat-input-area {
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  padding: 15px;
+  border: none;
+  height: var(--input-area-height);
+}
+
+.chat-input-area::after {
+  content: attr(data-replicated-value) " ";
+  white-space: pre-wrap;
+  visibility: hidden;
+}
+
+.chat-input {
+  font: 1em sans-serif;
+  flex: 1;
+  min-width: 95%;
+  height: 50px;
+  line-height: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  margin-right: 10px;
+  align-content: center;
+  border: none;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  background-color: #fff;
+  resize: none;
+  position: sticky;
+}
+
+.chat-input:focus {
+  outline: none;
+}
+
+.chat-input::-webkit-scrollbar {
+  width: 0;
+}
+
+.chat-input {
+  align-self: flex-end;
+}
+
+.chat-btn {
+  align-self: flex-end;
+}
+
+.chat-disclaimer {
+  display: flex;
+  justify-content: center;
+  color: var(--color-grey);
+  font-size: 14px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+/* Messages */
+
+.msg {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.msg:last-of-type {
+  margin: 10px;
+}
+
+.msg-text {
+  line-height: 20px;
+}
+
+.msg-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.msg-info-name {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.msg-info-time {
+  font-size: 0.85em;
+}
+
+/* Left Message */
+
+.msg-bubble {
+  max-width: 80%;
+  padding: 15px;
+  border-radius: 15px;
+  background-image: var(--left-bubble-bg);
+}
+
+.left-msg .msg-bubble {
+  border-bottom-left-radius: 0;
+}
+
+/* Right Message */
+
+.right-msg {
+  flex-direction: row-reverse;
+  margin: 0 0 10px 10px;
+}
+
+.right-msg .msg-bubble {
+  background-image: var(--right-bubble-bg);
+  border-bottom-right-radius: 0;
+  color: #fff;
+}
+
+/* Buttons */
+
+button {
+  min-width: 50px;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  background-color: #fff;
+}
+
+button .icon, .fa-paper-plane {
+  transition: 0.4s ease;
+}
+
+button:hover .icon {
+  margin-left: 20px;
+}
+
+button:hover .icon, button:hover .fa-paper-plane {
+  color: var(--color-blue);
+}
+
+button:hover .google {
+  color: var(--color-green);
+}
+
+button:hover .facebook {
+  color: var(--color-blue);
+}
+
+/* Sign In */
+
+.signin-window {
+  width: 100vw;
+  height: var(--signin-window-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  img {
+    padding: 0;
+  }
+
+  button {
+    width: 250px;
+  }
+
+  .auth-providers button:first-child {
+    margin-right: 20px;
+  }
+}
+
+/* For Desktop View */
+@media screen and (min-width: 1024px) {
+}
+
+/* For Tablet View */
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+}
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+  .app-logo {
+    max-width: 15%;
+  }
+
+  .app-logo-banner {
+    max-width: 60%;
+  }
+
+  .chat-header {
+    padding: 10px;
+  }
+  
+  .chat-input-area {
+    padding: 10px;
+  }
+  
+
+  .chat-input {
+    min-width: 80%;
+  }
+
+  .chat-disclaimer {
+    font-size: 10px;
+  }
+
+  button {
+    min-width: 50px;
+    width: 400px;
+  }
+
+  .signin-window {
+    .auth-providers {
+      display: flex;
+      flex-direction: column;
+
+      button:first-child {
+        margin-bottom: 20px;
+        margin-right: 0;
+      } 
+    }
+  }
+}
+
+/* For Mobile Landscape View */
+@media screen and (max-device-width: 640px) and (orientation: landscape) {
+}
+
+/* For Mobile Phones Portrait or Landscape View */
+@media screen and (max-device-width: 640px) {
+}
+
+/* For iPhone 4 Portrait or Landscape View */
+@media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+}
+
+/* For iPhone 5 Portrait or Landscape View */
+@media (device-height: 568px) and (device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+}
+
+/* For iPhone 6 and 6 plus Portrait or Landscape View */
+@media (min-device-height: 667px) and (min-device-width: 375px) and (-webkit-min-device-pixel-ratio: 3) {
+}
