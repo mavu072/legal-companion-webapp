@@ -4,7 +4,8 @@
   --color-grey: #b1aeae;
   --body-bg: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
   --border: 1px solid #ddd;
-  --left-bubble-bg: linear-gradient(0deg, #dfdede, #ececec);
+  --border-blue: 1px solid #579ffb;
+  --left-bubble-bg: linear-gradient(0deg, #f0f0f0, #f4f4f4);
   --right-bubble-bg: linear-gradient(0deg, #3789f6, #579ffb);
   --chat-header-height: 9vh;
   --chat-window-height: 82vh;
@@ -98,9 +99,8 @@ body {
   padding: 10px 20px;
   margin-right: 10px;
   align-content: center;
-  border: none;
+  border: var(--border);
   border-radius: 5px;
-  box-shadow: var(--box-shadow);
   background-color: #fff;
   resize: none;
   position: sticky;
@@ -108,6 +108,7 @@ body {
 
 .chat-input:focus {
   outline: none;
+  border: var(--border-blue);
 }
 
 .chat-input::-webkit-scrollbar {
@@ -201,12 +202,16 @@ button {
   text-align: center;
   border: none;
   border-radius: 5px;
-  box-shadow: var(--box-shadow);
+  border: var(--border);
   background-color: #fff;
 }
 
 button .icon, .fa-paper-plane {
   transition: 0.4s ease;
+}
+
+button:hover {
+  border: var(--border-blue);
 }
 
 button:hover .icon {
