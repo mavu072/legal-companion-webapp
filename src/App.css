@@ -5,12 +5,13 @@
   --body-bg: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
   --border: 1px solid #ddd;
   --border-blue: 1px solid #579ffb;
+  --border-green: 1px solid #097f1b;
   --left-bubble-bg: linear-gradient(0deg, #f0f0f0, #f4f4f4);
   --right-bubble-bg: linear-gradient(0deg, #3789f6, #579ffb);
   --chat-header-height: 9vh;
   --chat-window-height: 82vh;
   --input-area-height: 9vh;
-  --signin-window-height: 100vh;
+  --landing-window-height: 100vh;
   --box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -230,26 +231,88 @@ button:hover .facebook {
   color: var(--color-blue);
 }
 
-/* Sign In */
+button:has(.google):hover {
+  border: var(--border-green);
+}
 
-.signin-window {
+button:has(.facebook):hover {
+  border: var(--border-blue);
+}
+
+/* Landing / Sign In */
+
+.landing-window {
   width: 100vw;
-  height: var(--signin-window-height);
+  height: var(--landing-window-height);
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
 
-  img {
-    padding: 0;
+  .left-pane .right-pane {
+    width: 50vw;
+    height: var(--landing-window-height);
   }
 
-  button {
-    width: 250px;
+  .left-pane {
+    display: flex;
+    flex-direction: column;
+    justify-content: first baseline;
+
+    img, .tag-line  {
+      margin: 20px;
+    }
+
+    .left-pane-main {
+
+      .heading {
+        text-align: center;
+        font-size: 60px;
+        font-weight: 400;
+      }
+  
+      .tag-line {
+        text-align: left;
+        font-size: x-large;
+        font-weight: 400;
+      }
+  
+      .app-desc {
+        text-align: left;
+        font-size: medium;
+        margin: 10px 20px;
+  
+        p {
+          margin: 10px 0;
+        }
+      }
+  
+      .get-started {
+        font-size: x-large;
+        font-weight: 500;
+        margin: 0px 20px;
+      }
+      
+    }
+
+    .auth-providers {
+      justify-self: flex-end;
+      align-self: center;
+  
+      button {
+        width: 250px;
+      }
+    }
+  
+    .auth-providers button:first-child {
+      margin-right: 20px;
+    }
+
+
   }
 
-  .auth-providers button:first-child {
-    margin-right: 20px;
+  .right-pane {
+    .landing-page-banner {
+      width: 50vw;
+      height: var(--landing-window-height);
+    }
   }
 }
 
@@ -293,7 +356,7 @@ button:hover .facebook {
     width: 400px;
   }
 
-  .signin-window {
+  .landing-window {
     .auth-providers {
       display: flex;
       flex-direction: column;

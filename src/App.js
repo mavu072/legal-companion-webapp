@@ -1,11 +1,13 @@
 import './App.css';
+// Assets
 import logo from './Logo.svg';
 import logoIcn from './Logo-icn.svg';
+import landingPageBanner from './assets/workplace-conflict.svg'
+// Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { formatTime } from './util'
 // React
 import React, { useState, useRef, useEffect } from 'react';
 // Firebase
@@ -15,6 +17,8 @@ import 'firebase/compat/auth';
 // Firebase React Hooks
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
+// Components
+import { AssistantMessage, UserMessage } from './app-components/ChatComponents';
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
@@ -30,11 +34,15 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 const LEGAL_COMPANION_API_URL = "http://0.0.0.0:8000";
 
+/**
+ * Main App component.
+ * @returns App component
+ */
 function App() {
   const [user] = useAuthState(auth);
   return (
     <div className='app'>
-      {user ? <AppHeader /> : <></> }
+      {user ? <AppHeader /> : <></>}
       <section>
         {user ? <ChatWindow /> : <SignIn />}
       </section>
@@ -42,17 +50,25 @@ function App() {
   );
 }
 
+/**
+ * Displays the app header
+ * @returns AppHeader component
+ */
 function AppHeader() {
   return (
     <header className="chat-header">
-        <div className="header-title">
-          <img className="app-logo" src={logoIcn} alt='Logo' />
-        </div>
-        <SignOut />
+      <div className="header-title">
+        <img className="app-logo" src={logoIcn} alt='Logo' />
+      </div>
+      <SignOut />
     </header>
   );
 }
 
+/**
+ * Authenticates and signs in a user with the selected authentication provider.
+ * @returns SignIn component
+ */
 function SignIn() {
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -64,40 +80,78 @@ function SignIn() {
     auth.signInWithPopup(provider);
   }
   return (
-    <main className='signin-window'>
-      <img className="app-logo-banner" src={logo} alt='Logo' />
-      <div className='auth-providers'>
-        <button onClick={signInWithGoogle}>Sign in with Google <FontAwesomeIcon className='icon google' icon="fa-brands fa-google" /></button>
-        <button onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
+    <main className='landing-window'>
+      <div className='left-pane'>
+        <img className="app-logo-banner" src={logo} alt='Logo' />
+
+        <div className='left-pane-main'>
+          <div className='heading'>
+            Empower yourself with knowledge
+          </div>
+
+          <div className='tag-line'>
+            Empower yourself with the knowledge and confidence to navigate workplace challenges effectively.
+          </div>
+
+          <div className='app-desc'>
+            <p>AI Legal Companion is your ally in understanding your rights as an employee in South Africa.</p>
+          </div>
+
+          <p className='get-started'>Get started</p>
+        </div>
+
+        <div className='auth-providers'>
+          <button onClick={signInWithGoogle}>Sign in with Google <FontAwesomeIcon className='icon google' icon="fa-brands fa-google" /></button>
+          <button onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
+        </div>
+
+      </div>
+
+      <div className='right-pane'>
+        <img className="landing-page-banner" src={landingPageBanner} alt='Banner' />
       </div>
     </main>
   );
 }
 
+/**
+ * Logs out the currently logged in user.
+ * @returns SignOut component
+ */
 function SignOut() {
   return auth.currentUser && (
     <button onClick={() => auth.signOut()}>Sign Out <FontAwesomeIcon className='icon' icon="fa-solid fa-person-running" /></button>
   );
 }
 
+/**
+ * Displays a chat user interface.
+ * @returns ChatWindow component
+ */
 function ChatWindow() {
-  const messagesRef = firestore.collection(`users/${auth.currentUser.uid}/messages`); // User private messages collection
+  // Query database for logged in user private messages.
+  const messagesRef = firestore.collection(`users/${auth.currentUser.uid}/messages`);
+  // Sort by createdAt.
   const query = messagesRef.orderBy('createdAt').limit(25);
-
+  // Add use collection hook to populate messages with result from database query.
   const [messages] = useCollection(query);
-
+  // Manage form state.
   const [formValue, setFormValue] = useState('');
-
+  // Add ref for scrolling to newest message.
   const messagesEndRef = useRef(null);
-
+  /**
+   * Scrolls the target element into view with a smooth animation.
+   */
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  // When a new message is added. It will scroll into view
+  // Add effect for when a new message is added to the collection. It will scroll into view.
   useEffect(() => { scrollToBottom(); }, [messages]);
 
-  // When a new line is added on input area the textarea is resize automatically
+  /**
+   * Automatically resizes the target textarea based on the size of the content entered.
+   * @param {*} event 
+   */
   const resizeTextarea = (event) => {
     const textarea = document.querySelector('.chat-input');
     const minHeight = 50;
@@ -108,10 +162,20 @@ function ChatWindow() {
     }
   }
 
+  /**
+   * Returns a server-generated timestamp in the written data.
+   * @returns {firebase.firestore.FieldValue} server-generated timestamp
+   */
   const getServerTimestamp = () => {
     return firebase.firestore.FieldValue.serverTimestamp();
   }
 
+  /**
+   * Is triggered when a user submits their form input.
+   * Saves the form input in the messages collection and resets the form input.
+   * Then triggers an API request to create a response to the user input.
+   * @param {*} event 
+   */
   const sendMessage = async (event) => {
     event.preventDefault();
     // Clear form - state will only take place on the next render
@@ -129,52 +193,59 @@ function ChatWindow() {
     await replyToMessage(formValue, uid);
   }
 
+  /**
+   * Sends a request to the Legal Companion API with the user input.
+   * Then updates the messages collection with the API response.
+   * @param {String} userMsg 
+   * @param {String} userId 
+   */
   const replyToMessage = async (userMsg, userId) => {
+    // Create Request
     const apiEndpoint = `${LEGAL_COMPANION_API_URL}/assistant/ask/`;
     const reqPayload = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text : userMsg })
+      body: JSON.stringify({ text: userMsg })
     };
-
+    // Send API Request
     await fetch(apiEndpoint, reqPayload)
-          .then(async (response) => {
-            if (response.ok) {
-              const responseJson = await response.json();
-              // Handle response
-              let assistantResponse;
-              if (responseJson.error) {
-                // Handle error response
-                assistantResponse = responseJson.error;
-              } else {
-                // Handle valid response
-                assistantResponse = responseJson.response;
-              }
-              // Create firestore document
-              const newDoc = {
-                content: assistantResponse,
-                createdAt: getServerTimestamp(),
-                role: "assistant",
-                userId: userId
-              }
-              // Handle sources
-              if (responseJson.sources) {
-                const responseSources = new Map();
-                responseJson.sources.forEach((item, index) => {
-                  responseSources.set(`source ${index + 1}`, item[0]);
-                });
-                newDoc.sources = Object.fromEntries(responseSources)
-              }
-              // Save new document
-              await messagesRef.add(newDoc);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            // Handle error - Add Popup message
-          });
+      .then(async (response) => {
+        if (response.ok) {
+          const responseJson = await response.json();
+          // Handle response
+          let assistantResponse;
+          if (responseJson.error) {
+            // Handle error response
+            assistantResponse = responseJson.error;
+          } else {
+            // Handle valid response
+            assistantResponse = responseJson.response;
+          }
+          // Create firestore document
+          const newDoc = {
+            content: assistantResponse,
+            createdAt: getServerTimestamp(),
+            role: "assistant",
+            userId: userId
+          }
+          // Handle sources
+          if (responseJson.sources) {
+            const responseSources = new Map();
+            responseJson.sources.forEach((item, index) => {
+              responseSources.set(`source ${index + 1}`, item[0]);
+            });
+            newDoc.sources = Object.fromEntries(responseSources)
+          }
+          // Save new document
+          await messagesRef.add(newDoc);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error - Add Popup message
+      });
   }
 
   return (
@@ -189,25 +260,30 @@ function ChatWindow() {
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           onKeyUp={(e) => resizeTextarea(e)}
-          placeholder="Tell us what you need help with." ></textarea>
+          placeholder="Tell us what you need help with..." ></textarea>
         <button className='chat-btn' type="submit"
           onClick={(e) => resizeTextarea(e)}
           disabled={!formValue}>
-            <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
+          <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
         </button>
       </form>
     </>);
 }
 
+/**
+ * Displays a chat message.
+ * @param {*} props 
+ * @returns ChatMessage component
+ */
 function ChatMessage(props) {
   // Get content and user Id
   const { content, role, createdAt } = props.message;
   // Get message sender
-  const msgSender = role === "user" ? auth.currentUser.displayName : 'Assistant';
+  const msgSender = role === "user" ? auth.currentUser.displayName : 'assistant';
   // Get time message sent
   const timeStamp = createdAt !== null ? createdAt.toDate() : '';
 
-  if (msgSender === 'Assistant') {
+  if (msgSender === 'assistant') {
     return (<>
       <div className='chat-msg'>
         <AssistantMessage content={content} timeStamp={timeStamp} />
@@ -221,38 +297,6 @@ function ChatMessage(props) {
     </>);
   }
 }
-
-function AssistantMessage(props) {
-  return (
-    <div className="msg left-msg">
-      <div className="msg-bubble">
-        <div className="msg-info">
-          <div className="msg-info-name">Assistant</div>
-          <div className="msg-info-time">{formatTime(props.timeStamp)}</div>
-        </div>
-        <div className="msg-text">
-          {props.content}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-function UserMessage(props) {
-  return (
-    <div className="msg right-msg">
-      <div className="msg-bubble">
-        <div className="msg-info">
-          <div className="msg-info-name">{props.displayName}</div>
-          <div className="msg-info-time">{formatTime(props.timeStamp)}</div>
-        </div>
-        <div className="msg-text">
-          {props.content}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default App;
 
