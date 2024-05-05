@@ -28,6 +28,7 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+const LEGAL_COMPANION_API_URL = "http://0.0.0.0:8000";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -107,6 +108,10 @@ function ChatWindow() {
     }
   }
 
+  const getServerTimestamp = () => {
+    return firebase.firestore.FieldValue.serverTimestamp();
+  }
+
   const sendMessage = async (event) => {
     event.preventDefault();
     // Clear form - state will only take place on the next render
@@ -116,7 +121,7 @@ function ChatWindow() {
     // Save new message doc
     await messagesRef.add({
       content: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: getServerTimestamp(),
       role: "user",
       userId: uid,
     });
@@ -125,7 +130,7 @@ function ChatWindow() {
   }
 
   const replyToMessage = async (userMsg, userId) => {
-    const apiEndpoint = "http://127.0.0.1:8000/assistant/ask/";
+    const apiEndpoint = `${LEGAL_COMPANION_API_URL}/assistant/ask/`;
     const reqPayload = {
       method: 'POST',
       headers: {
@@ -150,7 +155,7 @@ function ChatWindow() {
               // Create firestore document
               const newDoc = {
                 content: assistantResponse,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                createdAt: getServerTimestamp(),
                 role: "assistant",
                 userId: userId
               }
