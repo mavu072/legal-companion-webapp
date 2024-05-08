@@ -11,7 +11,8 @@
   --chat-header-height: 9vh;
   --chat-window-height: 82vh;
   --input-area-height: 9vh;
-  --landing-window-height: 100vh;
+  --landing-window-height: 95vh;
+  --landing-footer-height: 5vh;
   --box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -246,50 +247,26 @@ button:has(.facebook):hover {
   height: var(--landing-window-height);
   display: flex;
 
-  .left-pane .right-pane {
-    width: 50vw;
+  .left-pane, .right-pane {  
     height: var(--landing-window-height);
   }
 
+  .right-pane {
+    width: 40vw;
+
+    .landing-page-banner {
+      width: 40vw;
+      height: var(--landing-window-height);
+    }
+  }
+
   .left-pane {
+    width: 60vw;
     display: flex;
     flex-direction: column;
-    justify-content: first baseline;
 
-    img, .tag-line  {
+    img  {
       margin: 20px;
-    }
-
-    .left-pane-main {
-
-      .heading {
-        text-align: center;
-        font-size: 60px;
-        font-weight: 400;
-      }
-  
-      .tag-line {
-        text-align: left;
-        font-size: x-large;
-        font-weight: 400;
-      }
-  
-      .app-desc {
-        text-align: left;
-        font-size: medium;
-        margin: 10px 20px;
-  
-        p {
-          margin: 10px 0;
-        }
-      }
-  
-      .get-started {
-        font-size: x-large;
-        font-weight: 500;
-        margin: 0px 20px;
-      }
-      
     }
 
     .auth-providers {
@@ -302,19 +279,68 @@ button:has(.facebook):hover {
     }
   
     .auth-providers button:first-child {
-      margin-right: 20px;
+      margin-right: 10px;
     }
 
+    .left-pane-main {
+      align-self: center;
+      display: flex;
+      flex-direction: column;
+      margin:  12% 0 0 10%;
 
-  }
+      .heading, .desc {
+        margin:  0 0 5% 0;
+      }
 
-  .right-pane {
-    .landing-page-banner {
-      width: 50vw;
-      height: var(--landing-window-height);
+      .heading {
+        text-align: left;
+        font-size: 50px;
+        font-weight: 400;
+      }
+
+      .heading span {
+        color: var(--color-blue);
+      }
+
+      .desc {
+        text-align: left;
+        font-size: 18px;
+      }
     }
   }
 }
+
+.landing-footer {
+  width: 100vw;
+  height: var(--landing-footer-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  font-size: 12px;
+  color: var(--color-grey);
+  background-color: #f0f0f0;
+  padding: 0 20px;
+
+  span::before {
+    content: "\00A0 \00A9 \00A0" attr(data-date) " ";
+  }
+
+  a:not(:first-child):before {
+    content: "\00B7";
+    margin: 0 10px;
+  }
+
+  a:link, a:active, a:visited {
+    text-decoration: none;
+    color: var(--color-grey);
+  }
+
+  a:hover {
+    color: var(--color-blue);
+  }
+}
+
 
 /* For Desktop View */
 @media screen and (min-width: 1024px) {
@@ -357,16 +383,51 @@ button:has(.facebook):hover {
   }
 
   .landing-window {
-    .auth-providers {
-      display: flex;
-      flex-direction: column;
 
-      button:first-child {
-        margin-bottom: 20px;
-        margin-right: 0;
-      } 
+    .left-pane {
+      width: 100vw;
+
+      img {
+        align-self: center;
+        margin: 10px 0;
+      }
+
+      .left-pane-main {
+        width: 80vw;
+        margin: 0;
+        
+        .heading {
+          font-size: 35px;
+          text-align: center;
+        }
+
+        .desc {
+          margin-bottom: 20px;
+          text-align: center;
+        }
+      }
+
+      .auth-providers {
+        display: flex;
+        flex-direction: column;
+
+        button {
+          width: 300px;
+        }
+    
+        button:first-child {
+          margin-bottom: 10px;
+          margin-right: 0;
+        } 
+      }
+    }
+
+    .right-pane {
+      width: 0;
+      display: none;
     }
   }
+
 }
 
 /* For Mobile Landscape View */

@@ -79,38 +79,39 @@ function SignIn() {
     const provider = new firebase.auth.FacebookAuthProvider();
     auth.signInWithPopup(provider);
   }
-  return (
+  return (<>
     <main className='landing-window'>
       <div className='left-pane'>
         <img className="app-logo-banner" src={logo} alt='Logo' />
 
         <div className='left-pane-main'>
           <div className='heading'>
-            Empower yourself with knowledge
+            <span>AI Legal Companion.</span> Empower yourself with the knowledge and confidence to navigate workplace challenges in South Africa.
           </div>
 
-          <div className='tag-line'>
-            Empower yourself with the knowledge and confidence to navigate workplace challenges effectively.
+          <div className='desc'>
+            AI Legal Companion is your ally in understanding your rights as an employee in South Africa.
           </div>
-
-          <div className='app-desc'>
-            <p>AI Legal Companion is your ally in understanding your rights as an employee in South Africa.</p>
-          </div>
-
-          <p className='get-started'>Get started</p>
         </div>
 
         <div className='auth-providers'>
           <button onClick={signInWithGoogle}>Sign in with Google <FontAwesomeIcon className='icon google' icon="fa-brands fa-google" /></button>
           <button onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
         </div>
-
       </div>
 
       <div className='right-pane'>
         <img className="landing-page-banner" src={landingPageBanner} alt='Banner' />
       </div>
     </main>
+    <footer className='landing-footer'>
+      <span data-date={new Date().getFullYear()}>Menity</span>
+      <div>
+        <a href='#privacy'>Privacy</a>
+        <a href='#terms'>Terms of Use</a>
+      </div>
+    </footer>
+  </>
   );
 }
 
