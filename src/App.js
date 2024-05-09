@@ -2,7 +2,6 @@ import './App.css';
 // Assets
 import logo from './Logo.svg';
 import logoIcn from './Logo-icn.svg';
-import landingPageBanner from './assets/workplace-conflict.svg'
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -81,10 +80,9 @@ function SignIn() {
   }
   return (<>
     <main className='landing-window'>
-      <div className='left-pane'>
         <img className="app-logo-banner" src={logo} alt='Logo' />
 
-        <div className='left-pane-main'>
+        <div className='app-content'>
           <div className='heading'>
             <span>AI Legal Companion.</span> Empower yourself with the knowledge and confidence to navigate workplace challenges in South Africa.
           </div>
@@ -98,11 +96,6 @@ function SignIn() {
           <button onClick={signInWithGoogle}>Sign in with Google <FontAwesomeIcon className='icon google' icon="fa-brands fa-google" /></button>
           <button onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
         </div>
-      </div>
-
-      <div className='right-pane'>
-        <img className="landing-page-banner" src={landingPageBanner} alt='Banner' />
-      </div>
     </main>
     <footer className='landing-footer'>
       <span data-date={new Date().getFullYear()}>Menity</span>
