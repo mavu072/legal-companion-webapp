@@ -81,17 +81,14 @@ function SignIn() {
   return (<>
     <main className='landing-window'>
         <img className="app-logo-banner" src={logo} alt='Logo' />
-
         <div className='app-content'>
           <div className='heading'>
             <span>AI Legal Companion.</span> Empower yourself with the knowledge and confidence to navigate workplace challenges in South Africa.
           </div>
-
           <div className='desc'>
-            AI Legal Companion is your ally in understanding your rights as an employee in South Africa.
+            AI Legal Companion is your ally in understanding your rights as an employee in South Africa. <span>Get started.</span>
           </div>
         </div>
-
         <div className='auth-providers'>
           <button onClick={signInWithGoogle}>Sign in with Google <FontAwesomeIcon className='icon google' icon="fa-brands fa-google" /></button>
           <button onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
@@ -101,7 +98,7 @@ function SignIn() {
       <span data-date={new Date().getFullYear()}>Menity</span>
       <div>
         <a href='#privacy'>Privacy</a>
-        <a href='#terms'>Terms of Use</a>
+        <a href='#terms'>Terms of Service</a>
       </div>
     </footer>
   </>

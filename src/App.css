@@ -2,6 +2,10 @@
   --color-blue: #004AAD;
   --color-green: #097f1b;
   --color-grey: #b1aeae;
+  --color-blue-1: #569FFF;
+  --color-blue-2: #D8E9FF;
+  --color-blue-3: #A4CBFF;
+  --landing-window-bg: url('./assets/waves-background.svg');
   --body-bg: linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
   --border: 1px solid #ddd;
   --border-blue: 1px solid #579ffb;
@@ -11,7 +15,7 @@
   --chat-header-height: 9vh;
   --chat-window-height: 82vh;
   --input-area-height: 9vh;
-  --landing-window-height: 95vh;
+  --landing-window-height: 100vh;
   --landing-footer-height: 5vh;
   --box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -205,7 +209,7 @@ button {
   border: none;
   border-radius: 5px;
   border: var(--border);
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 button .icon,
@@ -249,6 +253,8 @@ button:has(.facebook):hover {
   height: var(--landing-window-height);
   display: flex;
   flex-direction: column;
+  background-image: var(--landing-window-bg);
+  background-size: cover;
 
   img {
     margin: 20px;
@@ -273,13 +279,14 @@ button:has(.facebook):hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 5%;
+    margin: 6% 5% 3% 5%;
+    /* margin: top right bottom left */
 
     .heading {
       text-align: center;
       font-size: 50px;
       font-weight: 400;
-      margin-bottom: 20px;
+      margin-bottom: 3%;
     }
 
     .heading span {
@@ -289,6 +296,11 @@ button:has(.facebook):hover {
     .desc {
       text-align: left;
       font-size: 18px;
+    }
+
+    .desc span:last-child {
+      color: var(--color-blue);
+      white-space: nowrap;
     }
   }
 }
@@ -301,9 +313,10 @@ button:has(.facebook):hover {
   align-items: center;
   flex-direction: row;
   font-size: 12px;
-  color: var(--color-grey);
-  background-color: #f0f0f0;
+  color: var(--color-blue-2);
   padding: 0 20px;
+  position: fixed;
+  bottom: 0;
 
   span::before {
     content: "\00A0 \00A9 \00A0" attr(data-date) " ";
@@ -318,7 +331,7 @@ button:has(.facebook):hover {
   a:active,
   a:visited {
     text-decoration: none;
-    color: var(--color-grey);
+    color: var(--color-blue-2);
   }
 
   a:hover {
@@ -392,8 +405,9 @@ button:has(.facebook):hover {
       margin: 0;
 
       .heading {
-        font-size: 35px;
+        font-size: 30px;
         text-align: center;
+        margin-bottom: 20px;
       }
 
       .desc {
