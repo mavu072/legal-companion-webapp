@@ -2,15 +2,15 @@ import firebase from 'firebase/compat/app';
 
 /**
  * Returns a server-generated timestamp in the written data.
- * @returns {firebase.firestore.FieldValue} server-generated timestamp
+ * @returns {firebase.firestore.FieldValue} serverTimestamp
  */
-const getServerTimestamp = () => {
+function getServerTimestamp() {
     return firebase.firestore.FieldValue.serverTimestamp();
 }
 
 /**
  * Google auth provider.
- * @returns {firebase.auth.GoogleAuthProvider}
+ * @returns {firebase.auth.GoogleAuthProvider} GoogleAuthProvider
  */
 function googleAuthProvider() {
     return new firebase.auth.GoogleAuthProvider();
@@ -18,7 +18,7 @@ function googleAuthProvider() {
 
 /**
  * Facebook auth provider.
- * @returns {firebase.auth.FacebookAuthProvider}
+ * @returns {firebase.auth.FacebookAuthProvider} FacebookAuthProvider
  */
 function facebookAuthProvider() {
     return new firebase.auth.FacebookAuthProvider();
