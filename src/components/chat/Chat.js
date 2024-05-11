@@ -6,7 +6,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { formatTime } from "../../util";
+import { formatTime } from "../../util/util";
 import { getServerTimestamp } from '../../firebase/util';
 
 /**
