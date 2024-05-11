@@ -2,7 +2,7 @@
 import './App.css';
 
 // Assets
-import logoIcn from './Logo-icn.svg';
+import logoSymbol from './assets/Logo-symbol.svg';
 
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -10,8 +10,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
 // Components
-import ChatWindow from "./components/ChatComponents";
-import { SignIn, SignOut } from './components/AuthComponents';
+import ChatWindow from "./components/chat/Chat";
+import { SignIn, SignOut } from './components/auth/Auth';
 
 // Firebase React Hooks
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -47,7 +47,7 @@ function AppHeader() {
   return (
     <header className="chat-header">
       <div className="header-title">
-        <img className="app-logo" src={logoIcn} alt='Logo' />
+        <img className="app-logo" src={logoSymbol} alt='Logo' />
       </div>
       <SignOut firebaseAuth={auth} />
     </header>

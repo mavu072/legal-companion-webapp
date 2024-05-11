@@ -1,7 +1,7 @@
-import logo from '../Logo.svg';
+import logo from '../../assets/Logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { googleAuthProvider, facebookAuthProvider } from '../firebase/util';
+import { googleAuthProvider, facebookAuthProvider } from '../../firebase/util';
 /**
  * User Authentication Components
  */

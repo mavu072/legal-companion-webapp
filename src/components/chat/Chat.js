@@ -1,3 +1,4 @@
+import './Chat.css'
 // React
 import React, { useState, useRef, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -5,8 +6,8 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { formatTime } from "../util";
-import { getServerTimestamp } from '../firebase/util';
+import { formatTime } from "../../util";
+import { getServerTimestamp } from '../../firebase/util';
 
 /**
  * Chat Components
