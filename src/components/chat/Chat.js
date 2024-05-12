@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { formatTime } from "../../util/util";
 import { getServerTimestamp } from '../../firebase/util';
+import { InlineLoader } from '../app/Loader';
 
 /**
  * Chat Components
@@ -43,6 +44,11 @@ function ChatWindow(props) {
     // Add effect for when a new message is added to the collection. It will scroll into view.
     useEffect(() => { scrollToBottom(); }, [messages]);
 
+    // Manage reply loader
+    const [isLoading, setIsLoading] = useState(true);
+    // Add effect for loader
+    useEffect(() => { setIsLoading(false); }, []);
+
     /**
      * Automatically resizes the target textarea based on the size of the content entered.
      * @param {*} event 
@@ -67,6 +73,8 @@ function ChatWindow(props) {
         event.preventDefault();
         // Clear form - state will only take place on the next render
         setFormValue('');
+        // Set Loader
+        setIsLoading(true);
         // Get current user
         const { uid } = auth.currentUser;
         // Save new message doc
@@ -100,6 +108,7 @@ function ChatWindow(props) {
         await fetch(apiEndpoint, reqPayload)
             .then(async (response) => {
                 if (response.ok) {
+                    setIsLoading(false);
                     const responseJson = await response.json();
                     // Handle response
                     let assistantResponse;
@@ -126,11 +135,14 @@ function ChatWindow(props) {
                         newDoc.sources = Object.fromEntries(responseSources)
                     }
                     // Save new document
-                    await messagesRef.add(newDoc);
+                    await messagesRef.add(newDoc)
+                                    .catch((error) => {
+                                        console.log(error.message);
+                                    });
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.message);
                 // Handle error - Add Popup message
             });
     }
@@ -144,6 +156,7 @@ function ChatWindow(props) {
                         message={msg.data()}
                         currentUser={auth.currentUser}
                     />)}
+                {isLoading ? <InlineLoader /> : <></>}
                 <div ref={messagesEndRef} className='chat-disclaimer'>You are currently using a beta version and conversations are stored to improve responses.</div>
             </main>
             
