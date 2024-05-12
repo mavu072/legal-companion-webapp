@@ -3,12 +3,16 @@ import './Chat.css'
 import React, { useState, useRef, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
+// Material
+import SkeletonChat from './Skeleton';
+
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { InlineLoader } from '../app/Loader';
 import { formatTime } from "../../util/util";
 import { getServerTimestamp } from '../../firebase/util';
-import { InlineLoader } from '../app/Loader';
+import { resizeTextarea } from './util';
 
 /**
  * Chat Components
@@ -48,20 +52,6 @@ function ChatWindow(props) {
     const [isLoading, setIsLoading] = useState(true);
     // Add effect for loader
     useEffect(() => { setIsLoading(false); }, []);
-
-    /**
-     * Automatically resizes the target textarea based on the size of the content entered.
-     * @param {*} event 
-     */
-    const resizeTextarea = (event) => {
-        const textarea = document.querySelector('.chat-input');
-        const minHeight = 50;
-        textarea.style.height = `${minHeight}px`;
-        let scrollHeight = event.target.scrollHeight;
-        if (scrollHeight > minHeight) {
-            textarea.style.height = `${scrollHeight}px`;
-        }
-    }
 
     /**
      * Is triggered when a user submits their form input.
@@ -136,9 +126,9 @@ function ChatWindow(props) {
                     }
                     // Save new document
                     await messagesRef.add(newDoc)
-                                    .catch((error) => {
-                                        console.log(error.message);
-                                    });
+                        .catch((error) => {
+                            console.log(error.message);
+                        });
                 }
             })
             .catch((error) => {
@@ -150,16 +140,18 @@ function ChatWindow(props) {
     return (
         <>
             <main className='chat-window'>
-                {messages && messages.docs.map(msg =>
+                {messages ? messages && messages.docs.map(msg =>
                     <ChatMessage
                         key={msg.id}
                         message={msg.data()}
                         currentUser={auth.currentUser}
-                    />)}
+                    />) : <SkeletonChat />}
                 {isLoading ? <InlineLoader /> : <></>}
-                <div ref={messagesEndRef} className='chat-disclaimer'>You are currently using a beta version and conversations are stored to improve responses.</div>
+                <div ref={messagesEndRef} className='chat-disclaimer'>
+                    You are currently using a beta version and conversations are stored to improve responses.
+                </div>
             </main>
-            
+
             <form className='chat-input-area' onSubmit={sendMessage}>
                 <textarea id='textareaInput' className="chat-input"
                     value={formValue}
