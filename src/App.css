@@ -59,7 +59,7 @@ body {
 
 /* Buttons */
 
-button {
+.app-btn {
   min-width: 50px;
   width: 150px;
   height: 50px;
@@ -73,38 +73,38 @@ button {
   background-color: #ffffff;
 }
 
-button .icon,
+.app-btn .icon,
 .fa-paper-plane {
   max-width: 50%;
   transition: 0.4s ease;
 }
 
-button:hover {
+.app-btn:hover {
   border: var(--border-blue);
 }
 
-button:hover .icon {
+.app-btn:hover .icon {
   margin-left: 20px;
 }
 
-button:hover .icon,
-button:hover .fa-paper-plane {
+.app-btn:hover .icon,
+.app-btn:hover .fa-paper-plane {
   color: var(--color-blue);
 }
 
-button:hover .google {
+.app-btn:hover .google {
   color: var(--color-green);
 }
 
-button:hover .facebook {
+.app-btn:hover .facebook {
   color: var(--color-blue);
 }
 
-button:has(.google):hover {
+.app-btn:has(.google):hover {
   border: var(--border-green);
 }
 
-button:has(.facebook):hover {
+.app-btn:has(.facebook):hover {
   border: var(--border-blue);
 }
 
@@ -238,7 +238,7 @@ button:has(.facebook):hover {
     max-width: 165px;
   }
 
-  button {
+  .app-btn {
     min-width: 50px;
     width: 400px;
   }
@@ -296,7 +296,7 @@ button:has(.facebook):hover {
     max-width: 165px;
   }
 
-  button {
+  .app-btn {
     min-width: 50px;
     width: 400px;
   }

@@ -158,7 +158,7 @@ function ChatWindow(props) {
                     onChange={(e) => setFormValue(e.target.value)}
                     onKeyUp={(e) => resizeTextarea(e)}
                     placeholder="Tell us what you need help with..." ></textarea>
-                <button className='chat-btn' type="submit"
+                <button className='app-btn chat-btn' type="submit"
                     onClick={(e) => resizeTextarea(e)}
                     disabled={!formValue}>
                     <FontAwesomeIcon icon="fa-solid fa-paper-plane" />

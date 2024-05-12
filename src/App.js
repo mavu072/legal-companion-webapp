@@ -13,12 +13,14 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import ChatWindow from "./components/chat/Chat";
 import { SignIn, SignOut } from './components/auth/Auth';
 import { ScreenLoader } from './components/app/Loader';
+import SnackBarNotification from './components/notification/SnackBar';
 
 // Firebase React Hooks
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 // Firebase App
 import firebaseApp from './firebase/appConfig';
+import { useEffect, useState } from 'react';
 
 const app = firebaseApp();
 const auth = app.auth;
@@ -30,16 +32,29 @@ const firestore = app.firestore;
  */
 function App() {
   const [user, loading, error] = useAuthState(auth);
+  
+  const [authenticated, setAuthenticated] = useState(user);
+  useEffect(() => {
+    setAuthenticated(user);
+  }, [user]);
 
-  if (error) {
-    console.log(error);
-  }
+  const [isLoading, setIsLoading] = useState(loading);
+  useEffect(() => {
+    setIsLoading(loading);
+  }, [loading]);
+
+  const [errorMessage, setErrorMessage] = useState(error);
+  useEffect(() => {
+    setErrorMessage(error);
+  }, [error]);
 
   return (
     <>
-      {loading ? <ScreenLoader /> : <></>}
+      {isLoading && <ScreenLoader />}
+      {authenticated && <SnackBarNotification message={`Authenticated as ${authenticated.displayName}.`}/> }
+      {errorMessage && <SnackBarNotification message={`${errorMessage.message}.`}/> }
       <div className='app'>
-        {user ? <AppHeader /> : <></>}
+        {user && <AppHeader />}
         <section>
           {user ? <ChatWindow firebaseAuth={auth} firestoreDatabase={firestore} /> : <SignIn firebaseAuth={auth} />}
         </section>
