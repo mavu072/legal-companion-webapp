@@ -30,7 +30,7 @@ function ChatWindow(props) {
     // Query database for logged in user private messages.
     const messagesRef = firestore.collection(`users/${auth.currentUser.uid}/messages`);
     // Sort by createdAt.
-    const query = messagesRef.orderBy('createdAt').limit(25);
+    const query = messagesRef.orderBy('createdAt').limit(100);
     // Add use collection hook to populate messages with result from database query.
     const [messages] = useCollection(query);
     // Manage form state.
