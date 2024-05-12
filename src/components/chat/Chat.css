@@ -73,6 +73,7 @@
 .chat-disclaimer {
     display: flex;
     justify-content: center;
+    text-align: center;
     color: var(--color-grey);
     font-size: 14px;
     margin-top: 15px;
