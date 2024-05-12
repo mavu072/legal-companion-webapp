@@ -75,6 +75,7 @@ button {
 
 button .icon,
 .fa-paper-plane {
+  max-width: 50%;
   transition: 0.4s ease;
 }
 

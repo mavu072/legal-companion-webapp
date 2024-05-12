@@ -23,7 +23,7 @@ function ScreenLoader() {
 function InlineLoader() {
     return (
         <>
-            <div>
+            <div className='inline-loader'>
                 <ThreeDots
                     visible={true}
                     height="40"
