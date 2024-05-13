@@ -145,14 +145,14 @@ body {
     /* margin: top right bottom left */
 
     .heading {
-      text-align: center;
+      text-align: left;
       font-size: 50px;
       font-weight: 400;
-      margin-bottom: 10px;
+      margin-bottom: 0;
       min-height: 150px;
     }
 
-    .heading span {
+    .heading span:first-child {
       color: var(--color-blue);
     }
 
