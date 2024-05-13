@@ -1,5 +1,6 @@
 import logo from '../../assets/Logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TypeAnimation } from 'react-type-animation';
 import { ScreenLoader } from '../app/Loader';
 import SnackBarNotification from '../notification/SnackBar';
 import { googleAuthProvider, facebookAuthProvider } from '../../firebase/util';
@@ -49,15 +50,34 @@ function SignIn(props) {
     return (
         <>
             {isLoading && <ScreenLoader />}
-            {message && <SnackBarNotification message={message}/> }
+            {message && <SnackBarNotification message={message} />}
             <main className='landing-window'>
                 <img className="app-logo-banner" src={logo} alt='Logo' />
                 <div className='app-content'>
                     <div className='heading'>
-                        <span>AI Legal Companion.</span> Empower yourself with the knowledge and confidence to navigate workplace challenges in South Africa.
+                        <span>AI Legal Companion. </span>
+                        <TypeAnimation
+                            sequence={[
+                                // Same substring at the start will only be typed once, initially
+                                'Send your questions and get tailored legal information based on South Africa\'s labour laws.',
+                                1000,
+                                'Understand complex legal concepts with easy explanations, personalized to your situation.',
+                                1000,
+                                'Upload legal documents for a quick check against South Africa\'s labour laws.',
+                                1000,
+                                'Enjoy a seamless experience with our intuitive platform.',
+                                1000,
+                            ]}
+                            speed={50}
+                            repeat={Infinity}
+                            style={{
+                                color: '#000000',
+                            }}
+                        />
                     </div>
                     <div className='desc'>
-                        AI Legal Companion is your ally in understanding your rights as an employee in South Africa. <span>Get started.</span>
+                        Our AI-powered platform offers personalized legal insights to empower you in understanding your rights as an employee in South Africa.&nbsp;<br/><br/>
+                        <span>Join our community and take charge of your legal journey today!</span>
                     </div>
                 </div>
                 <div className='auth-providers'>
