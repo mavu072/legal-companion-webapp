@@ -108,6 +108,19 @@ body {
   border: var(--border-blue);
 }
 
+/* Links */
+
+.link:link,
+.link:active,
+.link:visited {
+  text-decoration: none;
+  color: var(--color-blue);
+}
+
+.link:hover {
+  color: var(--color-blue-2);
+}
+
 /* Landing / Sign In */
 
 .landing-window {

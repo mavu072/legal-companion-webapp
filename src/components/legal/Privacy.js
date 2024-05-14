@@ -1,11 +1,14 @@
 import './Legal.css';
 import AppFooter from '../app/Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Privacy() {
     return (
         <>
             <div className='legal-notice'>
+                
                 <div className='content'>
+                <a className='link' href='/'><FontAwesomeIcon icon="fa-solid fa-chevron-left" /> &nbsp;Back</a>
                     <h1>Privacy Notice</h1>
                     <h4>Don't worry we don't sell your information!</h4>
                     <p>At AI Legal Companion, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Notice outlines how we collect, use, disclose, and protect the information you provide to us when using our website.</p>
@@ -38,13 +41,13 @@ function Privacy() {
                     <p>We take reasonable measures to protect the security of your personal information and prevent unauthorized access, disclosure, or alteration. However, no method of transmission over the internet or electronic storage is completely secure, and we cannot guarantee absolute security.</p>
 
                     <h2>Your Rights</h2>
-                    <p>You have the right to access, correct, or delete your personal information. If you would like to exercise these rights or have any questions about our privacy practices, please contact us at <a href="mailto:menityapps@gmail.com">menityapps@gmail.com</a>.</p>
+                    <p>You have the right to access, correct, or delete your personal information. If you would like to exercise these rights or have any questions about our privacy practices, please contact us at <a className='link' href="mailto:menityapps@gmail.com">menityapps@gmail.com</a>.</p>
 
                     <h2>Changes to This Privacy Notice</h2>
                     <p>We may update this Privacy Notice from time to time to reflect changes in our practices or legal requirements. We will notify you of any significant changes by posting the updated Privacy Notice on our website.</p>
 
                     <h2>Contact Us</h2>
-                    <p>If you have any questions or concerns about our Privacy Notice or data practices, please contact us at <a href="mailto:menityapps@gmail.com">menityapps@gmail.com</a>.</p>
+                    <p>If you have any questions or concerns about our Privacy Notice or data practices, please contact us at <a className='link' href="mailto:menityapps@gmail.com">menityapps@gmail.com</a>.</p>
 
                     <p>This Privacy Notice was last updated on 14 May 2024.</p>
                 </div>
