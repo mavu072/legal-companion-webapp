@@ -8,7 +8,7 @@ function Privacy() {
             <div className='legal-notice'>
                 
                 <div className='content'>
-                <a className='link' href='/'><FontAwesomeIcon icon="fa-solid fa-chevron-left" /> &nbsp;Back</a>
+                <a className='link' href='/'><FontAwesomeIcon icon="fa-solid fa-chevron-left" /> &nbsp;Back to Home</a>
                     <h1>Privacy Policy</h1>
                     <h4>Don't worry we don't sell your information!</h4>
                     <p>At AI Legal Companion, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and protect the information you provide to us when using our website.</p>

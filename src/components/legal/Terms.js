@@ -7,7 +7,7 @@ function TermsOfService() {
         <>
             <div className='legal-notice'>
                 <div className='content'>
-                    <a className='link' href='/'><FontAwesomeIcon icon="fa-solid fa-chevron-left" /> &nbsp;Back</a>
+                    <a className='link' href='/'><FontAwesomeIcon icon="fa-solid fa-chevron-left" /> &nbsp;Back to Home</a>
                     <h1>Terms of Service</h1>
                     <h4>By using our website, you agree to these terms.</h4>
                     <p>Welcome to AI Legal Companion! These terms govern your use of our website and services. By accessing or using our website, you agree to comply with these terms. Please read them carefully.</p>
