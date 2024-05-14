@@ -7,6 +7,7 @@ function Privacy() {
             <div className='legal-notice'>
                 <div className='content'>
                     <h1>Privacy Notice</h1>
+                    <h4>Don't worry we don't sell your information!</h4>
                     <p>At AI Legal Companion, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Notice outlines how we collect, use, disclose, and protect the information you provide to us when using our website.</p>
 
                     <h2>Information We Collect</h2>
