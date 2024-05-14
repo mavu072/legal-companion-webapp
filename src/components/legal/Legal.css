@@ -32,6 +32,7 @@
         p:last-child {
             text-align: center;
             margin-top: 10px;
+            font-style: italic;
         }
 
         ul {
