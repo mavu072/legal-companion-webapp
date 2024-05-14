@@ -77,13 +77,18 @@ function SignIn(props) {
                         />
                     </div>
                     <div className='desc'>
-                        Our AI-powered platform offers personalized legal insights to empower you in understanding your rights as an employee in South Africa.&nbsp;<br/><br/>
-                        <span>Join our community and take charge of your legal journey today!</span>
+                        Our AI-powered platform offers personalized legal insights to empower you in understanding your rights as an employee in South Africa.&nbsp;
+                        <span>Join our community today!</span>
                     </div>
                 </div>
                 <div className='auth-providers'>
                     <button className='app-btn' onClick={signInWithGoogle}>Sign in with Google <FontAwesomeIcon className='icon google' icon="fa-brands fa-google" /></button>
                     <button className='app-btn' onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
+                </div>
+                <div className='notice'>
+                    <small>
+                        By continuing, you agree to our <a className='link' href='/terms'>Terms of Service</a> and acknowlegde our <a className='link' href='/privacy'>Privacy Policy</a>.
+                    </small>
                 </div>
             </main>
             <AppFooter />

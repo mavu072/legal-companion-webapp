@@ -135,6 +135,15 @@ body {
     margin: 20px;
   }
 
+  .notice {
+    align-self: center;
+    margin-top: 5px;
+  }
+
+  .notice > small > a {
+    white-space: nowrap;
+  }
+
   .auth-providers {
     justify-self: flex-end;
     align-self: center;
@@ -154,7 +163,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 6% 5% 3% 5%;
+    margin: 6% 5% 2% 5%;
     /* margin: top right bottom left */
 
     .heading {
@@ -241,7 +250,14 @@ body {
   .landing-window {
 
     .app-content {
-      width: 70vw;
+      width: 80vw;
+
+      .heading {
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 20px;
+        min-height: 110px;
+      }
     }
   }
 }
@@ -269,7 +285,7 @@ body {
     }
 
     .app-content {
-      width: 80vw;
+      width: 90vw;
       margin: 0;
 
       .heading {
@@ -327,8 +343,15 @@ body {
       margin: 20px 0;
     }
 
+    .notice {
+      width: 80%;
+      margin: 10px 0 20px 0;
+      align-self: center;
+      text-align: center;
+    }
+
     .app-content {
-      width: 80vw;
+      width: 90vw;
       margin: 0;
 
       .heading {
