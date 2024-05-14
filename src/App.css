@@ -192,6 +192,7 @@ body {
   padding: 0 20px;
   position: fixed;
   bottom: 0;
+  transition: 0.4s ease-in-out;
 
   span::before {
     content: "\00A0 \00A9 \00A0" attr(data-date) " ";
@@ -212,6 +213,10 @@ body {
   a:hover {
     color: var(--color-blue);
   }
+}
+
+.landing-footer:hover {
+  background: var(--color-blue);
 }
 
 /* For Desktop View */
