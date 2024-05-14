@@ -36,7 +36,7 @@ function TermsOfService() {
                     <p>We reserve the right to modify or update these terms at any time. We will notify you of any changes by posting the updated terms on our website. Your continued use of our website after any changes to these terms will constitute your acceptance of the revised terms.</p>
 
                     <h2>8. Contact Us</h2>
-                    <p>If you have any questions or concerns about these terms, please contact us at <a href="mailto:menityapps@gmail.com">menityapps@gmail.com</a>.</p>
+                    <p>If you have any questions or concerns about these terms, please contact us at <a className='link' href="mailto:menityapps@gmail.com">menityapps@gmail.com</a>.</p>
 
                     <p>These terms were last updated on 14 May 2024.</p>
                 </div>
