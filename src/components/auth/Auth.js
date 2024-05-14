@@ -5,6 +5,7 @@ import { ScreenLoader } from '../app/Loader';
 import SnackBarNotification from '../notification/SnackBar';
 import { googleAuthProvider, facebookAuthProvider } from '../../firebase/util';
 import React, { useState } from 'react';
+import AppFooter from '../app/Footer';
 
 /**
  * User Authentication Components
@@ -85,13 +86,7 @@ function SignIn(props) {
                     <button className='app-btn' onClick={signInWithFacebook}>Sign in with Facebook <FontAwesomeIcon className='icon facebook' icon="fa-brands fa-square-facebook" /></button>
                 </div>
             </main>
-            <footer className='landing-footer'>
-                <span data-date={new Date().getFullYear()}>Menity</span>
-                <div>
-                    <a href='#privacy'>Privacy</a>
-                    <a href='#terms'>Terms of Service</a>
-                </div>
-            </footer>
+            <AppFooter />
         </>
     );
 }
