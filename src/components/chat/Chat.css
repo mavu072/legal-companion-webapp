@@ -38,7 +38,7 @@
 .chat-input {
     font: 1em sans-serif;
     flex: 1;
-    min-width: 95%;
+    min-width: 92%;
     height: 50px;
     line-height: 20px;
     font-size: 16px;
@@ -47,7 +47,7 @@
     margin-right: 10px;
     align-content: center;
     border: var(--border);
-    border-radius: 5px;
+    border-radius: 30px;
     background-color: #fff;
     resize: none;
     position: sticky;
@@ -68,6 +68,8 @@
 
 .chat-btn {
     align-self: flex-end;
+    border-radius: 30px;
+    max-width: 50px;
 }
 
 .chat-disclaimer {
@@ -142,7 +144,7 @@
 @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
 
     .chat-input {
-        min-width: 90%;
+        min-width: 85%;
     }
 
 }
@@ -159,7 +161,8 @@
     }
 
     .chat-input {
-        min-width: 80%;
+        min-width: 70%;
+        margin-right: 5px;
     }
 
     .chat-disclaimer {

@@ -1,4 +1,4 @@
-import './Chat.css'
+import './Chat.css';
 // React
 import React, { useState, useRef, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -13,6 +13,9 @@ import { InlineLoader } from '../app/Loader';
 import { formatTime } from "../../util/util";
 import { getServerTimestamp } from '../../firebase/util';
 import { resizeTextarea } from './util';
+
+// Local Components
+import { FileUpload } from '../upload/Upload';
 
 /**
  * Chat Components
@@ -153,14 +156,14 @@ function ChatWindow(props) {
             </main>
 
             <form className='chat-input-area' onSubmit={sendMessage}>
+                <FileUpload />
                 <textarea id='textareaInput' className="chat-input"
                     value={formValue}
                     onChange={(e) => setFormValue(e.target.value)}
                     onKeyUp={(e) => resizeTextarea(e)}
-                    placeholder="Tell us what you need help with..." ></textarea>
-                <button className='app-btn chat-btn' type="submit"
-                    onClick={(e) => resizeTextarea(e)}
-                    disabled={!formValue}>
+                    placeholder="Send message" >
+                </textarea>
+                <button className='app-btn chat-btn' type="submit" disabled={!formValue}>
                     <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
                 </button>
             </form>
