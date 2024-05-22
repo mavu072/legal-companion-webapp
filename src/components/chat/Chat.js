@@ -16,6 +16,7 @@ import { resizeTextarea } from './util';
 
 // Local Components
 import { FileUpload } from '../upload/Upload';
+import SnackBarNotification from '../notification/SnackBar';
 
 /**
  * Chat Components
@@ -38,6 +39,8 @@ function ChatWindow(props) {
     const [messages] = useCollection(query);
     // Manage form state.
     const [formValue, setFormValue] = useState('');
+    // Display user messages and errors
+    const [message, setMessage] = useState('');
 
     // Add ref for scrolling to newest message.
     const messagesEndRef = useRef(null);
@@ -89,7 +92,7 @@ function ChatWindow(props) {
      */
     const replyToMessage = async (userMsg, userId) => {
         // Create Request
-        const apiEndpoint = `${LEGAL_COMPANION_API_URL}/assistant/ask/`;
+        const apiEndpoint = `${LEGAL_COMPANION_API_URL}/assistant/messages/send`;
         const reqPayload = {
             method: 'POST',
             headers: {
@@ -100,21 +103,16 @@ function ChatWindow(props) {
         // Send API Request
         await fetch(apiEndpoint, reqPayload)
             .then(async (response) => {
+                // Parse response
+                const responseJson = await response.json();
+                // Stop loading
+                setIsLoading(false);
+
+                // Check response
                 if (response.ok) {
-                    setIsLoading(false);
-                    const responseJson = await response.json();
-                    // Handle response
-                    let assistantResponse;
-                    if (responseJson.error) {
-                        // Handle error response
-                        assistantResponse = responseJson.error;
-                    } else {
-                        // Handle valid response
-                        assistantResponse = responseJson.response;
-                    }
                     // Create firestore document
                     const newDoc = {
-                        content: assistantResponse,
+                        content: responseJson.text,
                         createdAt: getServerTimestamp(),
                         role: "assistant",
                         userId: userId
@@ -129,19 +127,39 @@ function ChatWindow(props) {
                     }
                     // Save new document
                     await messagesRef.add(newDoc)
-                        .catch((error) => {
-                            console.log(error.message);
-                        });
+                                    .catch((error) => {
+                                        console.log(error.message);
+                                        throw new Error('Your message could not be processed.')
+                                    });
+                } else {
+                    // Handle error response
+                    if (responseJson.error) {     
+                        // Create firestore document
+                        const newDoc = {
+                            content: responseJson.error,
+                            createdAt: getServerTimestamp(),
+                            role: "assistant",
+                            userId: userId
+                        }
+                        // Save new document
+                        await messagesRef.add(newDoc)
+                                        .catch((error) => {
+                                            console.log(error.message);
+                                            throw new Error('Your message could not be processed.')
+                                        });
+                    } else {
+                        throw new Error(response.statusText);
+                    }
                 }
             })
             .catch((error) => {
-                console.log(error.message);
-                // Handle error - Add Popup message
+                setMessage(error.message);
             });
     }
 
     return (
         <>
+            {message && <SnackBarNotification message={message} />}
             <main className='chat-window'>
                 {messages ? messages && messages.docs.map(msg =>
                     <ChatMessage
