@@ -33,13 +33,13 @@ function ComplianceReport(props) {
                         <Typography><strong>Explanation:</strong></Typography>
                         <Typography>{section.explanation}</Typography>
                         <Typography>
-                            <strong>Source:</strong> <a className='link' href={section.reference.link} > {section.reference.text}</a>
+                            <strong>Source:</strong> <a className='link' target='_blank' href={section.reference.link} > {section.reference.text}</a>
                         </Typography>
                         <Typography>
                             <strong>AI Suggestion:</strong> {section.suggested_alternative.text}
                         </Typography>
                         {section.suggested_alternative.link && <Typography>
-                            <strong>AI Suggestion source:</strong> <a className='link' href={section.suggested_alternative.link} >Reference</a>
+                            <strong>AI Suggestion source:</strong> <a className='link' target='_blank' href={section.suggested_alternative.link} >Reference</a>
                         </Typography>}
 
                     </AccordionDetails>
