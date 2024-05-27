@@ -21,10 +21,11 @@
 
 .chat-input-area {
     display: flex;
+    justify-content: center;
     position: fixed;
     width: 100vw;
     bottom: 0;
-    padding: 15px;
+    padding: 10px 10px;
     border: none;
     height: var(--input-area-height);
 }
@@ -38,12 +39,12 @@
 .chat-input {
     font: 1em sans-serif;
     flex: 1;
-    min-width: 92%;
+    min-width: 90%;
     height: 50px;
     line-height: 20px;
     font-size: 16px;
     font-weight: 500;
-    padding: 10px 20px;
+    padding: 10px 20px 10px 40px;
     margin-right: 10px;
     align-content: center;
     border: var(--border);
@@ -68,8 +69,11 @@
 
 .chat-btn {
     align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 30px;
-    max-width: 50px;
+    max-width: 30px;
 }
 
 .chat-disclaimer {
@@ -80,6 +84,22 @@
     font-size: 14px;
     margin-top: 15px;
     margin-bottom: 10px;
+}
+
+/* Reports */
+
+.chat-report {
+    border: none;
+    border-radius: 15px;
+    border-bottom-left-radius: 0;
+    padding: 10px;
+    margin: 10px;
+    background-image: var(--left-bubble-bg);
+
+    .section-header {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
 }
 
 /* Messages */
@@ -144,7 +164,7 @@
 @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
 
     .chat-input {
-        min-width: 85%;
+        min-width: 90%;
     }
 
 }
@@ -161,8 +181,7 @@
     }
 
     .chat-input {
-        min-width: 70%;
-        margin-right: 5px;
+        min-width: 80%;
     }
 
     .chat-disclaimer {

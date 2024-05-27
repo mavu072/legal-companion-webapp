@@ -2,14 +2,22 @@ import './Upload.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from 'react';
 
-function FileUpload() {
-    const [selectedFiles, setSelectedFiles] = useState(null);
+function FileUpload(props) {
+    const callback = props.onFileUpload;
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
+    /**
+     * Handle file channge event.
+     * @param {Event} event 
+     */
     const handleFileChange = (event) => {
         const files = event.target.files;
         setSelectedFiles(files);
-        console.log(`Selected file: ${selectedFiles}`);
-        // Do something with the selected file if needed
+
+        // Trigger callback function to handle files
+        if (selectedFiles && selectedFiles.length > 0) {
+            callback(selectedFiles);
+        }
     };
 
     return (
@@ -23,6 +31,7 @@ function FileUpload() {
                     type="file"
                     accept=".jpg,.jpeg,.png,.pdf" // Accepts images and PDFs
                     multiple={true}
+                    onInput={(e) => setSelectedFiles(e.target.files)}
                     onChange={(e) => handleFileChange(e)}
                 />
             </div>

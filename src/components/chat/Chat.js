@@ -17,6 +17,9 @@ import { resizeTextarea } from './util';
 // Local Components
 import { FileUpload } from '../upload/Upload';
 import SnackBarNotification from '../notification/SnackBar';
+import { ComplianceReport } from '../upload/ComplianceReport';
+
+import axios from 'axios';
 
 /**
  * Chat Components
@@ -127,13 +130,13 @@ function ChatWindow(props) {
                     }
                     // Save new document
                     await messagesRef.add(newDoc)
-                                    .catch((error) => {
-                                        console.log(error.message);
-                                        throw new Error('Your message could not be processed.')
-                                    });
+                        .catch((error) => {
+                            console.log(error.message);
+                            throw new Error('Your message could not be processed.')
+                        });
                 } else {
                     // Handle error response
-                    if (responseJson.error) {     
+                    if (responseJson.error) {
                         // Create firestore document
                         const newDoc = {
                             content: responseJson.error,
@@ -143,10 +146,10 @@ function ChatWindow(props) {
                         }
                         // Save new document
                         await messagesRef.add(newDoc)
-                                        .catch((error) => {
-                                            console.log(error.message);
-                                            throw new Error('Your message could not be processed.')
-                                        });
+                            .catch((error) => {
+                                console.log(error.message);
+                                throw new Error('Your message could not be processed.')
+                            });
                     } else {
                         throw new Error(response.statusText);
                     }
@@ -155,6 +158,73 @@ function ChatWindow(props) {
             .catch((error) => {
                 setMessage(error.message);
             });
+    }
+
+    /**
+     * Set uploaded files state.
+     * @param {Array<File>} files 
+     */
+    const handleFileUpload = async (files) => {
+        console.log(`Uploaded files:`);
+        console.log(files);
+
+        // Handle
+        if (files && files.length > 0) {
+            // File names
+            const fileNames = Array.from(files).map((file) => file.name).join(', ');
+            // Set Loader
+            setIsLoading(true);
+            // Get current user
+            const { uid } = auth.currentUser;
+            // Save new message doc
+            await messagesRef.add({
+                content: `Uploaded: ${fileNames}`,
+                createdAt: getServerTimestamp(),
+                role: "user",
+                userId: uid,
+            });
+
+            // Create form data
+            const formData = new FormData();
+            // Append each file to the FormData object
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i], files[i].name);
+            }
+
+            // Send files
+            await axios.post('http://0.0.0.0:8000/assistant/files/send/', formData, {
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(async (response) => {
+                console.log('Response:', response.data);
+                // Create firestore document
+                const newDoc = {
+                    content: `Compliance Report: ${fileNames}`,
+                    data: response.data,
+                    createdAt: getServerTimestamp(),
+                    role: "assistant",
+                    userId: uid
+                }
+                // Save new document
+                await messagesRef.add(newDoc)
+                    .catch((error) => {
+                        console.log(error.message);
+                        // throw new Error('Your message could not be processed.')
+                    });
+            }).catch(error => {
+                console.error('Error:', error);
+                setMessage(error.message);
+            });
+
+            // End loader
+            setIsLoading(false);
+        } else {
+            console.log('No files selected');
+            setMessage('No files selected');
+        }
+
     }
 
     return (
@@ -174,12 +244,13 @@ function ChatWindow(props) {
             </main>
 
             <form className='chat-input-area' onSubmit={sendMessage}>
-                <FileUpload />
+                <FileUpload
+                    onFileUpload={(files) => handleFileUpload(files)} />
                 <textarea id='textareaInput' className="chat-input"
                     value={formValue}
                     onChange={(e) => setFormValue(e.target.value)}
                     onKeyUp={(e) => resizeTextarea(e)}
-                    placeholder="Send message" >
+                    placeholder="Send a message or upload a file" >
                 </textarea>
                 <button className='app-btn chat-btn' type="submit" disabled={!formValue}>
                     <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
@@ -196,18 +267,31 @@ function ChatWindow(props) {
  */
 function ChatMessage(props) {
     // Get content and user Id
-    const { content, role, createdAt } = props.message;
+    const { content, role, createdAt, data } = props.message;
     // Get message sender
     const msgSender = role === "user" ? props.currentUser.displayName : 'assistant';
     // Get time message sent
     const timeStamp = createdAt !== null ? createdAt.toDate() : '';
 
     if (msgSender === 'assistant') {
-        return (<>
-            <div className='chat-msg'>
-                <AssistantMessage content={content} timeStamp={timeStamp} />
-            </div>
-        </>);
+        if (data.type === 'compliance_report') {
+            return (<>
+                <div className='chat-msg'>
+                    <AssistantMessage content={content} timeStamp={timeStamp} />
+                </div>
+                {data.items.map((item, index) => (
+                    <div className='chat-report'>
+                        <ComplianceReport report={item} key={index} />
+                    </div>
+                ))}
+            </>);
+        } else {
+            return (<>
+                <div className='chat-msg'>
+                    <AssistantMessage content={content} timeStamp={timeStamp} />
+                </div>
+            </>);
+        }
     } else {
         return (<>
             <div className='chat-msg'>
