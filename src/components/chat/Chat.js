@@ -34,8 +34,10 @@ function ChatWindow(props) {
     const auth = props.firebaseAuth;
     const firestore = props.firestoreDatabase;
 
+    // Get current user
+    const { uid } = auth.currentUser;
     // Query database for logged in user private messages.
-    const messagesRef = firestore.collection(`users/${auth.currentUser.uid}/messages`);
+    const messagesRef = firestore.collection(`users/${uid}/messages`);
     // Sort by createdAt.
     const query = messagesRef.orderBy('createdAt').limit(100);
     // Add use collection hook to populate messages with result from database query.
@@ -47,10 +49,7 @@ function ChatWindow(props) {
 
     // Add ref for scrolling to newest message.
     const messagesEndRef = useRef(null);
-
-    /**
-     * Scrolls the target element into view with a smooth animation.
-     */
+    // Scrolls the target element into view with a smooth animation.
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -66,7 +65,7 @@ function ChatWindow(props) {
      * Is triggered when a user submits their form input.
      * Saves the form input in the messages collection and resets the form input.
      * Then triggers an API request to create a response to the user input.
-     * @param {*} event 
+     * @param {Event} event 
      */
     const sendMessage = async (event) => {
         event.preventDefault();
@@ -74,8 +73,6 @@ function ChatWindow(props) {
         setFormValue('');
         // Set Loader
         setIsLoading(true);
-        // Get current user
-        const { uid } = auth.currentUser;
         // Save new message doc
         await messagesRef.add({
             content: formValue,
@@ -165,17 +162,14 @@ function ChatWindow(props) {
      * @param {Array<File>} files 
      */
     const handleFileUpload = async (files) => {
-        console.log(`Uploaded files:`);
-        console.log(files);
-
         // Handle
         if (files && files.length > 0) {
             // File names
             const fileNames = Array.from(files).map((file) => file.name).join(', ');
+
             // Set Loader
             setIsLoading(true);
-            // Get current user
-            const { uid } = auth.currentUser;
+
             // Save new message doc
             await messagesRef.add({
                 content: `Uploaded: ${fileNames}`,
@@ -191,40 +185,42 @@ function ChatWindow(props) {
                 formData.append('files', files[i], files[i].name);
             }
 
-            // Send files
-            await axios.post('http://0.0.0.0:8000/assistant/files/send/', formData, {
-                headers: {
-                    'accept': 'application/json',
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(async (response) => {
-                console.log('Response:', response.data);
-                // Create firestore document
-                const newDoc = {
-                    content: `Compliance Report: ${fileNames}`,
-                    data: response.data,
-                    createdAt: getServerTimestamp(),
-                    role: "assistant",
-                    userId: uid
-                }
-                // Save new document
-                await messagesRef.add(newDoc)
-                    .catch((error) => {
-                        console.log(error.message);
-                        // throw new Error('Your message could not be processed.')
-                    });
-            }).catch(error => {
-                console.error('Error:', error);
+            // Compliance checking
+            try {
+                await sendFilesForComplianceChecking(formData, fileNames, uid);
+            } catch (error) {
                 setMessage(error.message);
-            });
+            }
 
             // End loader
             setIsLoading(false);
         } else {
-            console.log('No files selected');
             setMessage('No files selected');
         }
+    }
 
+    const sendFilesForComplianceChecking = async (formData, fileNames, userId) => {
+        // Send files
+        await axios.post(`${LEGAL_COMPANION_API_URL}/assistant/files/send/`, formData, {
+            headers: {
+                'accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(async (response) => {
+            // Create firestore document
+            const newDoc = {
+                content: `Compliance Report: ${fileNames}`,
+                data: response.data,
+                createdAt: getServerTimestamp(),
+                role: "assistant",
+                userId: userId
+            }
+            // Save new document
+            await messagesRef.add(newDoc);
+            
+        }).catch(error => {
+            throw new Error(error.message)
+        });
     }
 
     return (
@@ -275,7 +271,7 @@ function ChatMessage(props) {
     const timeStamp = createdAt !== null ? createdAt.toDate() : '';
 
     if (msgSender === 'assistant') {
-        if (data.type === 'compliance_report') {
+        if (data && data.type === 'compliance_report') {
             return (<>
                 <div className='chat-msg'>
                     <AssistantMessage content={content} timeStamp={timeStamp} />
