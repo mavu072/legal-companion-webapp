@@ -242,19 +242,20 @@ function ChatWindow(props) {
                     You are currently using a beta version and conversations are stored to improve responses.
                 </div>
             </main>
-
             <form className='chat-input-area' onSubmit={sendMessage}>
-                <FileUpload
-                    onFileUpload={(files) => handleFileUpload(files)} />
-                <textarea id='textareaInput' className="chat-input"
-                    value={formValue}
-                    onChange={(e) => setFormValue(e.target.value)}
-                    onKeyUp={(e) => resizeTextarea(e)}
-                    placeholder="Send a message or upload a file" >
-                </textarea>
-                <button className='app-btn chat-btn' type="submit" disabled={!formValue}>
-                    <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
-                </button>
+                <div className='chat-input-wrapper'>
+                    <FileUpload
+                        onFileUpload={(files) => handleFileUpload(files)} />
+                    <textarea id='textareaInput' className="chat-input"
+                        value={formValue}
+                        onChange={(e) => setFormValue(e.target.value)}
+                        onKeyUp={(e) => resizeTextarea(e)}
+                        placeholder="Send a message or upload file" >
+                    </textarea>
+                    <button className='app-btn chat-btn' type="submit" disabled={!formValue}>
+                        <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
+                    </button>
+                </div>
             </form>
         </>
     );

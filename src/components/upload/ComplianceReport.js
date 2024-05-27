@@ -26,7 +26,7 @@ function ComplianceReport(props) {
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1bh-content"
                         id="panel1bh-header">
-                        <Typography sx={{ width: '35%', flexShrink: 0 }}>{section.section_title}</Typography>
+                        <Typography sx={{ width: '35%', flexShrink: 0, overflowWrap: 'break-word' }}>{section.section_title}</Typography>
                         <Typography sx={{ color: 'text.secondary' }}>{section.non_compliant_text}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -53,7 +53,7 @@ function ComplianceReport(props) {
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1bh-content"
                         id="panel1bh-header" >
-                        <Typography sx={{ width: '35%', flexShrink: 0 }}>
+                        <Typography sx={{ width: '35%', flexShrink: 0, overflowWrap: 'break-word' }}>
                             {section.section_title}
                         </Typography>
                         <Typography sx={{ color: 'text.secondary' }}>{section.compliant_text}</Typography>

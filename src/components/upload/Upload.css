@@ -1,6 +1,6 @@
 /* File Upload */
 
-.file-upload > input {
+.file-upload>input {
     display: none;
 }
 
@@ -8,13 +8,14 @@
     z-index: 1;
     position: absolute;
     bottom: 0;
-    left: 10px;
+    left: 15px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 50px;
     width: 50px;
-    height: var(--input-area-height);
+    height: 50px;
     border: none;
 }
 
@@ -25,4 +26,14 @@
 
 .file-upload:hover .icon {
     color: var(--color-blue);
+}
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
+
+    .file-upload {
+        margin-bottom: 5px;
+        left: 10px;
+    }
+
 }
