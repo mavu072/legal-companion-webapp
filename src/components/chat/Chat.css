@@ -103,11 +103,6 @@
     padding: 10px;
     margin: 10px;
     background-image: var(--left-bubble-bg);
-
-    .section-header {
-        margin-top: 15px;
-        margin-bottom: 10px;
-    }
 }
 
 /* Messages */

@@ -1,0 +1,40 @@
+
+.section-header {
+    display: flex;
+    align-items: center;
+}
+
+.section-header:first-of-type {
+    margin-bottom: 5px;
+}
+
+
+.section-header:not(:first-of-type) {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.icon-info {
+    color: lightblue;
+}
+
+.icon-rating {
+    color: goldenrod;
+}
+
+.icon-compliant {
+    color: green;
+}
+
+.icon-non-compliant {
+    color: red;
+}
+
+.accordion-compliant {
+    border-left: 2px solid green;
+    border-right: 2px solid green;
+}
+
+.accordion-non-compliant {
+    border-left: 2px solid red;
+    border-right: 2px solid red;
+}
