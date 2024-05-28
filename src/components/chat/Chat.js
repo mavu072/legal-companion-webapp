@@ -1,4 +1,4 @@
-import './Chat.css'
+import './Chat.css';
 // React
 import React, { useState, useRef, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -14,6 +14,13 @@ import { formatTime } from "../../util/util";
 import { getServerTimestamp } from '../../firebase/util';
 import { resizeTextarea } from './util';
 
+// Local Components
+import { FileUpload } from '../upload/Upload';
+import SnackBarNotification from '../notification/SnackBar';
+import { ComplianceReport } from '../upload/ComplianceReport';
+
+import axios from 'axios';
+
 /**
  * Chat Components
  */
@@ -27,21 +34,22 @@ function ChatWindow(props) {
     const auth = props.firebaseAuth;
     const firestore = props.firestoreDatabase;
 
+    // Get current user
+    const { uid } = auth.currentUser;
     // Query database for logged in user private messages.
-    const messagesRef = firestore.collection(`users/${auth.currentUser.uid}/messages`);
+    const messagesRef = firestore.collection(`users/${uid}/messages`);
     // Sort by createdAt.
     const query = messagesRef.orderBy('createdAt').limit(100);
     // Add use collection hook to populate messages with result from database query.
     const [messages] = useCollection(query);
     // Manage form state.
     const [formValue, setFormValue] = useState('');
+    // Display user messages and errors
+    const [message, setMessage] = useState('');
 
     // Add ref for scrolling to newest message.
     const messagesEndRef = useRef(null);
-
-    /**
-     * Scrolls the target element into view with a smooth animation.
-     */
+    // Scrolls the target element into view with a smooth animation.
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -57,7 +65,7 @@ function ChatWindow(props) {
      * Is triggered when a user submits their form input.
      * Saves the form input in the messages collection and resets the form input.
      * Then triggers an API request to create a response to the user input.
-     * @param {*} event 
+     * @param {Event} event 
      */
     const sendMessage = async (event) => {
         event.preventDefault();
@@ -65,8 +73,6 @@ function ChatWindow(props) {
         setFormValue('');
         // Set Loader
         setIsLoading(true);
-        // Get current user
-        const { uid } = auth.currentUser;
         // Save new message doc
         await messagesRef.add({
             content: formValue,
@@ -86,7 +92,7 @@ function ChatWindow(props) {
      */
     const replyToMessage = async (userMsg, userId) => {
         // Create Request
-        const apiEndpoint = `${LEGAL_COMPANION_API_URL}/assistant/ask/`;
+        const apiEndpoint = `${LEGAL_COMPANION_API_URL}/assistant/messages/send`;
         const reqPayload = {
             method: 'POST',
             headers: {
@@ -97,21 +103,16 @@ function ChatWindow(props) {
         // Send API Request
         await fetch(apiEndpoint, reqPayload)
             .then(async (response) => {
+                // Parse response
+                const responseJson = await response.json();
+                // Stop loading
+                setIsLoading(false);
+
+                // Check response
                 if (response.ok) {
-                    setIsLoading(false);
-                    const responseJson = await response.json();
-                    // Handle response
-                    let assistantResponse;
-                    if (responseJson.error) {
-                        // Handle error response
-                        assistantResponse = responseJson.error;
-                    } else {
-                        // Handle valid response
-                        assistantResponse = responseJson.response;
-                    }
                     // Create firestore document
                     const newDoc = {
-                        content: assistantResponse,
+                        content: responseJson.text,
                         createdAt: getServerTimestamp(),
                         role: "assistant",
                         userId: userId
@@ -128,17 +129,103 @@ function ChatWindow(props) {
                     await messagesRef.add(newDoc)
                         .catch((error) => {
                             console.log(error.message);
+                            throw new Error('Your message could not be processed.')
                         });
+                } else {
+                    // Handle error response
+                    if (responseJson.error) {
+                        // Create firestore document
+                        const newDoc = {
+                            content: responseJson.error,
+                            createdAt: getServerTimestamp(),
+                            role: "assistant",
+                            userId: userId
+                        }
+                        // Save new document
+                        await messagesRef.add(newDoc)
+                            .catch((error) => {
+                                console.log(error.message);
+                                throw new Error('Your message could not be processed.')
+                            });
+                    } else {
+                        throw new Error(response.statusText);
+                    }
                 }
             })
             .catch((error) => {
-                console.log(error.message);
-                // Handle error - Add Popup message
+                setMessage(error.message);
             });
+    }
+
+    /**
+     * Set uploaded files state.
+     * @param {Array<File>} files 
+     */
+    const handleFileUpload = async (files) => {
+        // Handle
+        if (files && files.length > 0) {
+            // File names
+            const fileNames = Array.from(files).map((file) => file.name).join(', ');
+
+            // Set Loader
+            setIsLoading(true);
+
+            // Save new message doc
+            await messagesRef.add({
+                content: `Uploaded: ${fileNames}`,
+                createdAt: getServerTimestamp(),
+                role: "user",
+                userId: uid,
+            });
+
+            // Create form data
+            const formData = new FormData();
+            // Append each file to the FormData object
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i], files[i].name);
+            }
+
+            // Compliance checking
+            try {
+                await sendFilesForComplianceChecking(formData, fileNames, uid);
+            } catch (error) {
+                setMessage(error.message);
+            }
+
+            // End loader
+            setIsLoading(false);
+        } else {
+            setMessage('No files selected');
+        }
+    }
+
+    const sendFilesForComplianceChecking = async (formData, fileNames, userId) => {
+        // Send files
+        await axios.post(`${LEGAL_COMPANION_API_URL}/assistant/files/send/`, formData, {
+            headers: {
+                'accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(async (response) => {
+            // Create firestore document
+            const newDoc = {
+                content: `Compliance Report: ${fileNames}`,
+                data: response.data,
+                createdAt: getServerTimestamp(),
+                role: "assistant",
+                userId: userId
+            }
+            // Save new document
+            await messagesRef.add(newDoc);
+            
+        }).catch(error => {
+            throw new Error(error.message)
+        });
     }
 
     return (
         <>
+            {message && <SnackBarNotification message={message} />}
             <main className='chat-window'>
                 {messages ? messages && messages.docs.map(msg =>
                     <ChatMessage
@@ -151,18 +238,20 @@ function ChatWindow(props) {
                     You are currently using a beta version and conversations are stored to improve responses.
                 </div>
             </main>
-
             <form className='chat-input-area' onSubmit={sendMessage}>
-                <textarea id='textareaInput' className="chat-input"
-                    value={formValue}
-                    onChange={(e) => setFormValue(e.target.value)}
-                    onKeyUp={(e) => resizeTextarea(e)}
-                    placeholder="Tell us what you need help with..." ></textarea>
-                <button className='app-btn chat-btn' type="submit"
-                    onClick={(e) => resizeTextarea(e)}
-                    disabled={!formValue}>
-                    <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
-                </button>
+                <div className='chat-input-wrapper'>
+                    <FileUpload
+                        onFileUpload={(files) => handleFileUpload(files)} />
+                    <textarea id='textareaInput' className="chat-input"
+                        value={formValue}
+                        onChange={(e) => setFormValue(e.target.value)}
+                        onKeyUp={(e) => resizeTextarea(e)}
+                        placeholder="Send a message or upload file" >
+                    </textarea>
+                    <button className='app-btn chat-btn' type="submit" disabled={!formValue}>
+                        <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
+                    </button>
+                </div>
             </form>
         </>
     );
@@ -175,18 +264,31 @@ function ChatWindow(props) {
  */
 function ChatMessage(props) {
     // Get content and user Id
-    const { content, role, createdAt } = props.message;
+    const { content, role, createdAt, data } = props.message;
     // Get message sender
     const msgSender = role === "user" ? props.currentUser.displayName : 'assistant';
     // Get time message sent
     const timeStamp = createdAt !== null ? createdAt.toDate() : '';
 
     if (msgSender === 'assistant') {
-        return (<>
-            <div className='chat-msg'>
-                <AssistantMessage content={content} timeStamp={timeStamp} />
-            </div>
-        </>);
+        if (data && data.type === 'compliance_report') {
+            return (<>
+                <div className='chat-msg'>
+                    <AssistantMessage content={content} timeStamp={timeStamp} />
+                </div>
+                {data.items.map((item, index) => (
+                    <div className='chat-report'>
+                        <ComplianceReport report={item} key={index} />
+                    </div>
+                ))}
+            </>);
+        } else {
+            return (<>
+                <div className='chat-msg'>
+                    <AssistantMessage content={content} timeStamp={timeStamp} />
+                </div>
+            </>);
+        }
     } else {
         return (<>
             <div className='chat-msg'>

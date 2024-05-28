@@ -21,10 +21,11 @@
 
 .chat-input-area {
     display: flex;
+    justify-content: center;
     position: fixed;
     width: 100vw;
     bottom: 0;
-    padding: 15px;
+    padding: 10px 10px;
     border: none;
     height: var(--input-area-height);
 }
@@ -35,19 +36,26 @@
     visibility: hidden;
 }
 
+.chat-input-wrapper {
+    align-self: flex-end;
+    display: flex;
+    width: 100vw;
+    height: 50px;
+}
+
 .chat-input {
     font: 1em sans-serif;
     flex: 1;
-    min-width: 95%;
+    min-width: 90%;
     height: 50px;
     line-height: 20px;
     font-size: 16px;
     font-weight: 500;
-    padding: 10px 20px;
-    margin-right: 10px;
+    padding: 10px 20px 10px 40px;
+    margin: 0 5px;
     align-content: center;
     border: var(--border);
-    border-radius: 5px;
+    border-radius: 30px;
     background-color: #fff;
     resize: none;
     position: sticky;
@@ -68,6 +76,12 @@
 
 .chat-btn {
     align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    max-width: 50px;
+    height: 50px;
 }
 
 .chat-disclaimer {
@@ -78,6 +92,22 @@
     font-size: 14px;
     margin-top: 15px;
     margin-bottom: 10px;
+}
+
+/* Reports */
+
+.chat-report {
+    border: none;
+    border-radius: 15px;
+    border-bottom-left-radius: 0;
+    padding: 10px;
+    margin: 10px;
+    background-image: var(--left-bubble-bg);
+
+    .section-header {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
 }
 
 /* Messages */
@@ -155,7 +185,7 @@
     }
 
     .chat-input-area {
-        padding: 10px;
+        padding: 5px;
     }
 
     .chat-input {
