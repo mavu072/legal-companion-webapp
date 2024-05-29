@@ -5,6 +5,7 @@ import App from './App';
 import PageNotFound from './components/error/RouteErrors';
 import Privacy from './components/legal/Privacy';
 import TermsOfService from './components/legal/Terms';
+import About from './components/about/About';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/terms',
     element: <TermsOfService />
+  },
+  {
+    path: '/about',
+    element: <About />
   }
 ]);
 
