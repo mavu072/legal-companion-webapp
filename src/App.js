@@ -10,6 +10,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
 // Components
+import ResponsiveChatUI from './v2/components/chat/chatUI';
 import ChatWindow from "./components/chat/Chat";
 import { SignIn, SignOut } from './components/auth/Auth';
 import { ScreenLoader } from './components/app/Loader';
@@ -54,27 +55,11 @@ function App() {
       {authenticated && <SnackBarNotification message={`Authenticated as ${authenticated.displayName}.`}/> }
       {errorMessage && <SnackBarNotification message={`${errorMessage.message}.`}/> }
       <div className='app'>
-        {user && <AppHeader />}
         <section>
-          {user ? <ChatWindow firebaseAuth={auth} firestoreDatabase={firestore} /> : <SignIn firebaseAuth={auth} />}
+          {user ? <ResponsiveChatUI firebaseAuth={auth} firestoreDatabase={firestore} /> : <SignIn firebaseAuth={auth} />}
         </section>
       </div>
     </>
-  );
-}
-
-/**
- * Displays the app header
- * @returns AppHeader component
- */
-function AppHeader() {
-  return (
-    <header className="chat-header">
-      <div className="header-title">
-        <img className="app-logo" src={logoSymbol} alt='Logo' />
-      </div>
-      <SignOut firebaseAuth={auth} />
-    </header>
   );
 }
 
