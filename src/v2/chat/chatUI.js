@@ -2,13 +2,11 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,12 +14,19 @@ import Typography from '@mui/material/Typography';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CreateIcon from '@mui/icons-material/Create';
 import Tooltip from '@mui/material/Tooltip';
-import GradingIcon from '@mui/icons-material/Grading';
+import Button from '@mui/material/Button';
+
+import { AppContext } from '../context-provider/Context';
 
 const drawerWidth = 240;
+const appName = 'AI Legal Companion';
 
-function ResponsiveChatUI(props) {
-    // const { firebaseAuth, firestoreDatabase } = props;
+function ResponsiveChatUI() {
+    const { auth, user, firestore } = React.useContext(AppContext);
+
+    const signOutUser = () => {
+        auth.signOut();
+    }
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
@@ -66,22 +71,6 @@ function ResponsiveChatUI(props) {
                     </ListItem>
                 ))}
             </List>
-            <Divider />
-            <List>
-                <ListItem>
-                    <Typography><small>Tools</small></Typography>
-                </ListItem>
-                {['Check your legal documents'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index === 0 && <GradingIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
         </div>
     );
 
@@ -107,13 +96,28 @@ function ResponsiveChatUI(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                        AI Legal Companion
+                        {appName}
                     </Typography>
-                    <Tooltip title='Log out'>
-                        <IconButton>
-                            <LogoutIcon />
-                        </IconButton>
-                    </Tooltip>
+                    {
+                        user && <Tooltip title='Sign out'>
+                            <IconButton onClick={signOutUser}>
+                                <LogoutIcon />
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    {
+                        !user && <Tooltip title='Sign In'>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                size="small"
+                                component="a"
+                                href="/login"
+                            >
+                                Sign In
+                            </Button>
+                        </Tooltip>
+                    }
                 </Toolbar>
             </AppBar>
             <Box

@@ -1,38 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import PageNotFound from './components/error/RouteErrors';
-import Privacy from './components/legal/Privacy';
-import TermsOfService from './components/legal/Terms';
-import About from './components/about/About';
 import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    errorElement: <PageNotFound />
-  },
-  {
-    path: '/privacy',
-    element: <Privacy />
-  },
-  {
-    path: '/terms',
-    element: <TermsOfService />
-  },
-  {
-    path: '/about',
-    element: <About />
-  }
-]);
+import './index.css';
+import Router from './v2/browser-router/router';
+import AppProvider from './v2/context-provider/Context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AppProvider>
+      <RouterProvider router={Router} />
+    </AppProvider>
   </React.StrictMode>
 );
 
