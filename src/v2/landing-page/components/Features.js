@@ -15,6 +15,8 @@ import imgMobile from '../assets/chat-mobile.svg';
 import imgLaptop from '../assets/chat-laptop.svg';
 import imgPlatforms from '../assets/supported-platforms.svg';
 
+const appName = 'AI Legal Companion';
+
 const items = [
   {
     icon: <QuestionAnswerIcon />,
@@ -36,7 +38,7 @@ const items = [
     icon: <DevicesRoundedIcon />,
     title: 'Available on all platforms',
     description:
-      'Available on Android, IOS, Windows and MacOS.',
+      `Continue your conversations on any device. ${appName} is available on Android, IOS, Windows and MacOS.`,
     imageLight: `url("${imgPlatforms}")`,
     imageDark: `url("${imgPlatforms}")`,
   }
@@ -57,14 +59,14 @@ export default function Features() {
         <Grid item xs={12} md={6}>
           <div>
             <Typography component="h2" variant="h4" color="text.primary">
-              Features
+              Key Features
             </Typography>
             <Typography
               variant="body1"
               color="text.secondary"
               sx={{ mb: { xs: 2, sm: 4 } }}
             >
-              Explore the platform's features.
+              Features of {appName}.
             </Typography>
           </div>
           <Grid container item gap={1} sx={{ display: { xs: 'auto', sm: 'none' } }}>

@@ -64,7 +64,10 @@ export default function Footer() {
           }}
         >
           <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
-            <Box sx={{ ml: '-15px' }}>
+            <Box sx={{ 
+              // ml: '-15px' 
+              ml: { xs: '5px', sm: '-15px' }
+              }}>
               <img
                 src={mode === 'light' ? logoLight : logoDark}
                 style={logoStyle}
@@ -85,9 +88,6 @@ export default function Footer() {
           </Typography>
           <Link color="text.secondary" href="#">
             Features
-          </Link>
-          <Link color="text.secondary" href="#">
-            Testimonials
           </Link>
           <Link color="text.secondary" href="#">
             Highlights

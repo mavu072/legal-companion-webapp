@@ -14,45 +14,20 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
 const tiers = [
   {
-    title: 'Free',
+    title: 'Freemium',
+    subheader: 'No costs',
     price: '0',
     description: [
-      '10 users included',
-      '2 GB of storage',
-      'Help center access',
-      'Email support',
-    ],
-    buttonText: 'Sign up for free',
-    buttonVariant: 'outlined',
-  },
-  {
-    title: 'Professional',
-    subheader: 'Recommended',
-    price: '15',
-    description: [
-      '20 users included',
-      '10 GB of storage',
-      'Help center access',
-      'Priority email support',
-      'Dedicated team',
-      'Best deals',
+      'Unlimited messages',
+      'Unlimited file uploads',
+      'Available on all your devices',
     ],
     buttonText: 'Start now',
     buttonVariant: 'contained',
-  },
-  {
-    title: 'Enterprise',
-    price: '30',
-    description: [
-      '50 users included',
-      '30 GB of storage',
-      'Help center access',
-      'Phone & email support',
-    ],
-    buttonText: 'Contact us',
-    buttonVariant: 'outlined',
-  },
+  }
 ];
+
+const currency = 'ZAR';
 
 export default function Pricing() {
   return (
@@ -75,13 +50,10 @@ export default function Pricing() {
         }}
       >
         <Typography component="h2" variant="h4" color="text.primary">
-          Pricing
+          Everything You Need, Completely Free
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Quickly build an effective pricing table for your potential customers with
-          this layout. <br />
-          It&apos;s built with default Material UI components with little
-          customization.
+          Enjoy Full Access to All Features at No Cost.
         </Typography>
       </Box>
       <Grid container spacing={3} alignItems="center" justifyContent="center">
@@ -99,11 +71,11 @@ export default function Pricing() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 4,
-                border: tier.title === 'Professional' ? '1px solid' : undefined,
+                border: tier.title === 'Freemium' ? '1px solid' : undefined,
                 borderColor:
-                  tier.title === 'Professional' ? 'primary.main' : undefined,
+                  tier.title === 'Freemium' ? 'primary.main' : undefined,
                 background:
-                  tier.title === 'Professional'
+                  tier.title === 'Freemium'
                     ? 'linear-gradient(#033363, #021F3B)'
                     : undefined,
               }}
@@ -115,13 +87,13 @@ export default function Pricing() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    color: tier.title === 'Professional' ? 'grey.100' : '',
+                    color: tier.title === 'Freemium' ? 'grey.100' : '',
                   }}
                 >
                   <Typography component="h3" variant="h6">
                     {tier.title}
                   </Typography>
-                  {tier.title === 'Professional' && (
+                  {tier.title === 'Freemium' && (
                     <Chip
                       icon={<AutoAwesomeIcon />}
                       label={tier.subheader}
@@ -144,11 +116,11 @@ export default function Pricing() {
                   sx={{
                     display: 'flex',
                     alignItems: 'baseline',
-                    color: tier.title === 'Professional' ? 'grey.50' : undefined,
+                    color: tier.title === 'Freemium' ? 'grey.50' : undefined,
                   }}
                 >
                   <Typography component="h3" variant="h2">
-                    ${tier.price}
+                    {currency}{tier.price}
                   </Typography>
                   <Typography component="h3" variant="h6">
                     &nbsp; per month
@@ -175,7 +147,7 @@ export default function Pricing() {
                       sx={{
                         width: 20,
                         color:
-                          tier.title === 'Professional'
+                          tier.title === 'Freemium'
                             ? 'primary.light'
                             : 'primary.main',
                       }}
@@ -185,7 +157,7 @@ export default function Pricing() {
                       variant="subtitle2"
                       sx={{
                         color:
-                          tier.title === 'Professional' ? 'grey.200' : undefined,
+                          tier.title === 'Freemium' ? 'grey.200' : undefined,
                       }}
                     >
                       {line}
@@ -198,7 +170,7 @@ export default function Pricing() {
                   fullWidth
                   variant={tier.buttonVariant}
                   component="a"
-                  href="/material-ui/getting-started/templates/checkout/"
+                  href="/home"
                   target="_blank"
                 >
                   {tier.buttonText}

@@ -15,6 +15,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CreateIcon from '@mui/icons-material/Create';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { AppContext } from '../context-provider/Context';
 
@@ -22,7 +24,7 @@ const drawerWidth = 240;
 const appName = 'AI Legal Companion';
 
 function ResponsiveChatUI() {
-    const { auth, user, firestore } = React.useContext(AppContext);
+    const { auth, user, mode, toggleColorMode, firestore } = React.useContext(AppContext);
 
     const signOutUser = () => {
         auth.signOut();
@@ -46,6 +48,8 @@ function ResponsiveChatUI() {
         }
     };
 
+    const defaultTheme = createTheme({ palette: { mode } });
+
     const drawer = (
         <div>
             <Toolbar sx={{
@@ -61,7 +65,7 @@ function ResponsiveChatUI() {
             </Toolbar>
             <List>
                 <ListItem>
-                    <Typography><small>Recent</small></Typography>
+                    <Typography><small>Recent chats</small></Typography>
                 </ListItem>
                 {['Converstation Name 1', 'Converstation Name 2', 'Converstation Name 3'].map((text, index) => (
                     <ListItem key={text} disablePadding>
@@ -71,105 +75,127 @@ function ResponsiveChatUI() {
                     </ListItem>
                 ))}
             </List>
-        </div>
-    );
-
-    return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` },
-                    color: 'black',
-                    backgroundColor: 'white'
-                }} >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                        {appName}
-                    </Typography>
-                    {
-                        user && <Tooltip title='Sign out'>
-                            <IconButton onClick={signOutUser}>
-                                <LogoutIcon />
-                            </IconButton>
-                        </Tooltip>
-                    }
-                    {
-                        !user && <Tooltip title='Sign In'>
+            {
+                !user &&
+                <List>
+                    <Divider />
+                    <ListItem>
+                        <Tooltip title='Sign In or Sign Up'>
                             <Button
                                 color="primary"
                                 variant="contained"
                                 size="small"
                                 component="a"
                                 href="/login"
+                                sx={{ flexGrow: 1 }}
                             >
-                                Sign In
+                                Sign In or Sign Up
                             </Button>
                         </Tooltip>
-                    }
-                </Toolbar>
-            </AppBar>
-            <Box
-                component="nav"
-                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                aria-label="Recent chats" >
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Drawer
-                    variant="temporary"
-                    open={mobileOpen}
-                    onTransitionEnd={handleDrawerTransitionEnd}
-                    onClose={handleDrawerClose}
-                    ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
-                    }}
+                    </ListItem>
+                    <ListItem>
+                        <Tooltip title='Switch mode'>
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                size="small"
+                                onClick={toggleColorMode}
+                                sx={{ flexGrow: 1 }}
+                            >
+                                Switch to {mode === 'light' ? 'dark' : 'light'} mode
+                            </Button>
+                        </Tooltip>
+                    </ListItem>
+                </List>
+            }
+        </div>
+    );
+
+    return (
+        <ThemeProvider theme={defaultTheme}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
                     sx={{
-                        display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                >
-                    {drawer}
-                </Drawer>
-                <Drawer
-                    variant="permanent"
-                    sx={{
-                        display: { xs: 'none', sm: 'block' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                    open
-                >
-                    {drawer}
-                </Drawer>
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        ml: { sm: `${drawerWidth}px` },
+                        color: `${ mode === 'light' ? 'black' : 'color.default' }`,
+                        backgroundColor: `${ mode === 'light' ? 'white' : 'background.default' }`,
+                    }} >
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { sm: 'none' } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                            {appName}
+                        </Typography>
+                        {
+                            user && <Tooltip title='Sign out'>
+                                <IconButton onClick={signOutUser}>
+                                    <LogoutIcon />
+                                </IconButton>
+                            </Tooltip>
+                        }
+                    </Toolbar>
+                </AppBar>
+                <Box
+                    component="nav"
+                    sx={{ width: { sm: drawerWidth }, flexGrow: 1 }}
+                    aria-label="Recent chats" >
+                    {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                    <Drawer
+                        variant="temporary"
+                        open={mobileOpen}
+                        onTransitionEnd={handleDrawerTransitionEnd}
+                        onClose={handleDrawerClose}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                    >
+                        {drawer}
+                    </Drawer>
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+                <Box component="main"
+                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }} >
+                    <Toolbar />
+                    <Typography paragraph>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
+                        enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
+                        imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
+                        Convallis convallis tellus id interdum velit laoreet id donec ultrices.
+                        Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+                        adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
+                        nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
+                        leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
+                        feugiat vivamus at augue. At augue eget arcu dictum varius duis at
+                        consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
+                        sapien faucibus et molestie ac.
+                    </Typography>
+                </Box>
             </Box>
-            <Box component="main"
-                sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }} >
-                <Toolbar />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-                    enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-                    imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-                    Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-                    Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-                    nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-                    leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-                    feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-                    consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-                    sapien faucibus et molestie ac.
-                </Typography>
-            </Box>
-        </Box>
+        </ThemeProvider>
     );
 }
 

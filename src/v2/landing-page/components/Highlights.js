@@ -7,47 +7,50 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
 import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
-import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import AccessibilityNew from '@mui/icons-material/AccessibilityNew';
+import SecurityRounded from '@mui/icons-material/SecurityRounded';
+import DocumentScannerRounded from '@mui/icons-material/DocumentScannerRounded';
+import SupportAgentRounded from '@mui/icons-material/SupportAgentRounded';
+
+const appName = 'AI Legal Companion';
 
 const items = [
   {
-    icon: <SettingsSuggestRoundedIcon />,
-    title: 'Adaptable performance',
+    icon: <AutoFixHighRoundedIcon />,
+    title: 'Innovation',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+      'Cutting-edge AI technology delivers accurate and relevant legal information.',
+  },
+  {
+    icon: <AccessibilityNew />,
+    title: 'Accessibility',
+    description:
+      'Free to use, ensuring all South African employees have access to legal knowledge.',
+  },
+  {
+    icon: <DocumentScannerRounded />,
+    title: 'Compliance Checker',
+    description:
+      'Ensure your employment agreements comply with South African laws with our AI-driven compliance checker.',
   },
   {
     icon: <ConstructionRoundedIcon />,
-    title: 'Built to last',
+    title: 'Empowerment',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'Tools to make informed decisions and protect your workplace rights.',
   },
   {
-    icon: <ThumbUpAltRoundedIcon />,
-    title: 'Great user experience',
+    icon: <SecurityRounded />,
+    title: 'Security',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Privacy is a priority. We comply with PoPIA and protect your data',
   },
+
   {
-    icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative functionality',
+    icon: <SupportAgentRounded />,
+    title: 'Support',
     description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
-  },
-  {
-    icon: <SupportAgentRoundedIcon />,
-    title: 'Reliable support',
-    description:
-      'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
-  },
-  {
-    icon: <QueryStatsRoundedIcon />,
-    title: 'Precision in every detail',
-    description:
-      'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+      'Dedicated support team available to assist with your queries and provide guidance.',
   },
 ];
 
@@ -78,12 +81,10 @@ export default function Highlights() {
           }}
         >
           <Typography component="h2" variant="h4">
-            Highlights
+            Why Choose {appName}?
           </Typography>
           <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Explore why our product stands out: adaptability, durability,
-            user-friendly design, and innovation. Enjoy reliable customer support and
-            precision in every detail.
+          Discover the Benefits of {appName}.
           </Typography>
         </Box>
         <Grid container spacing={2.5}>

@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import logoLight from '../assets/Logo-short-light.svg';
+import logoDark from '../assets/Logo-short-dark.svg';
 
 import { AppContext } from '../context-provider/Context';
 import { googleAuthProvider } from '../../firebase/util';
@@ -74,7 +75,7 @@ function SignIn() {
                     console.log(error.code, error.message); // github.com/mavu072/legal-companion-webapp/issues/4
                 })
                 .finally(() => {
-                    console.log('User creation:', auth);
+                    console.log('User authenticated:', auth);
                 });
         } else {
             auth.createUserWithEmailAndPassword(email, password)
@@ -82,7 +83,7 @@ function SignIn() {
                     console.log(error.code, error.message); // github.com/mavu072/legal-companion-webapp/issues/4
                 })
                 .finally(() => {
-                    console.log('User authentication:', auth);
+                    console.log('User created:', auth);
                 });
         }
     };
@@ -125,7 +126,7 @@ function SignIn() {
                 >
                     <Link href="/" variant="body2">
                         <img
-                            src={logoLight}
+                            src={mode === 'light' ? logoLight : logoDark}
                             style={logoStyle}
                             alt={appName}
                         />
