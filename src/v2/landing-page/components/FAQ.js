@@ -51,7 +51,7 @@ const faqs = [
     },
     {
         "question": "How can I contact AI Legal Companion for support or feedback?",
-        "answer": `We love hearing from our users! If you have any questions, feedback, or suggestions, please contact us at <Link> ${supportEmail} </Link>.`
+        "answer": `We love hearing from our users! If you have any questions, feedback, or suggestions, please contact us at <Link>${supportEmail}</Link>.`
     }
 ];
 

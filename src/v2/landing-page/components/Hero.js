@@ -56,7 +56,7 @@ export default function Hero() {
             color="text.secondary"
             sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
           >
-            Dealing with unfair working conditions? Unpaid wages? or Need help understanding a confusing contract. Our AI-powered platform offers personalized legal insights to assist you in understanding your rights as an employee in South Africa.
+            Dealing with unfair working conditions? Unpaid wages? or Need help understanding a legal contract. Our AI-powered platform offers personalized legal insights to assist you in understanding your rights as an employee in South Africa.
           </Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
